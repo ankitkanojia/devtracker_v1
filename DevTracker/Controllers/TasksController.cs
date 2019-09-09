@@ -27,8 +27,8 @@ namespace DevTracker.Controllers
                 var roleMasterId = Convert.ToInt64(CookieHelper.GetCookie(CookieName.RoleMasterId));
 
                 //Check that if we found id 0 and role not owener or PM
-                if (id > 0 || roleMasterId == (int) EnumList.Roles.Owner ||
-                    roleMasterId == (int) EnumList.Roles.Project_Manager)
+                if (id > 0 || roleMasterId == (int)EnumList.Roles.Owner ||
+                    roleMasterId == (int)EnumList.Roles.Project_Manager)
                 {
                     var taskMaster =
                         await
@@ -102,19 +102,22 @@ namespace DevTracker.Controllers
                                 await _entities.SaveChangesAsync();
                             }
 
-                            taskAttachments = data.AttachedFiles.Select(item => new TaskAttachment
-                            {
-                                TaskMasterId = taskmaster.TaskMasterId,
-                                CreatedBy = userMasterId,
-                                CreatedDate = DateTime.Now,
-                                DisplayName = item.FileName,
-                                FileName = Utilities.SaveFile(item,
-                                    Server.MapPath("~" + BasicProperty.ProjectAttachmentPath + taskmaster.ProjectId +
-                                                   "/"), Guid.NewGuid().ToString()),
-                                FileSize = item.ContentLength / 1024
-                            }).ToList();
+                            taskAttachments = (from item in data.AttachedFiles
+                                               where item != null
+                                               select new TaskAttachment
+                                               {
+                                                   TaskMasterId = taskmaster.TaskMasterId,
+                                                   CreatedBy = userMasterId,
+                                                   CreatedDate = DateTime.Now,
+                                                   DisplayName = item.FileName,
+                                                   FileName = Utilities.SaveFile(item,
+                                                       Server.MapPath("~" + BasicProperty.ProjectAttachmentPath + taskmaster.ProjectId +
+                                                                      "/"), Guid.NewGuid().ToString()),
+                                                   FileSize = item.ContentLength / 1024
+                                               }).ToList();
 
-                            _entities.TaskAttachments.AddRange(taskAttachments);
+                            if (taskAttachments.Any())
+                                _entities.TaskAttachments.AddRange(taskAttachments);
 
                             TempData["Success"] = "Task updated successfully";
                         }
@@ -146,19 +149,22 @@ namespace DevTracker.Controllers
                     //Save attached file if any found
                     if (data.AttachedFiles.Any())
                     {
-                        var taskAttachments = data.AttachedFiles.Select(item => new TaskAttachment
-                        {
-                            TaskMasterId = taskmaster.TaskMasterId,
-                            CreatedBy = userMasterId,
-                            CreatedDate = DateTime.Now,
-                            DisplayName = item.FileName,
-                            FileName = Utilities.SaveFile(item,
-                                Server.MapPath("~" + BasicProperty.ProjectAttachmentPath + taskmaster.ProjectId + "/"),
-                                Guid.NewGuid().ToString()),
-                            FileSize = item.ContentLength / 1024
-                        }).ToList();
+                        var taskAttachments = (from item in data.AttachedFiles
+                                               where item != null
+                                               select new TaskAttachment
+                                               {
+                                                   TaskMasterId = taskmaster.TaskMasterId,
+                                                   CreatedBy = userMasterId,
+                                                   CreatedDate = DateTime.Now,
+                                                   DisplayName = item.FileName,
+                                                   FileName = Utilities.SaveFile(item,
+                                                       Server.MapPath("~" + BasicProperty.ProjectAttachmentPath + taskmaster.ProjectId +
+                                                                      "/"), Guid.NewGuid().ToString()),
+                                                   FileSize = item.ContentLength / 1024
+                                               }).ToList();
 
-                        _entities.TaskAttachments.AddRange(taskAttachments);
+                        if (taskAttachments.Any())
+                            _entities.TaskAttachments.AddRange(taskAttachments);
                     }
 
                     //Save call
@@ -243,19 +249,19 @@ namespace DevTracker.Controllers
                     {
                         switch (changeType)
                         {
-                            case (int) EnumList.TaskChangeType.Assignee:
+                            case (int)EnumList.TaskChangeType.Assignee:
                                 taskMaster.AssignyId = changeValue;
                                 break;
-                            case (int) EnumList.TaskChangeType.Reporter:
+                            case (int)EnumList.TaskChangeType.Reporter:
                                 taskMaster.ReporterId = changeValue;
                                 break;
-                            case (int) EnumList.TaskChangeType.Priority:
+                            case (int)EnumList.TaskChangeType.Priority:
                                 taskMaster.PriorityMasterId = changeValue;
                                 break;
-                            case (int) EnumList.TaskChangeType.Task_Status:
+                            case (int)EnumList.TaskChangeType.Task_Status:
                                 taskMaster.TaskStatusMasterId = changeValue;
                                 break;
-                            case (int) EnumList.TaskChangeType.Completion_Percentage:
+                            case (int)EnumList.TaskChangeType.Completion_Percentage:
                                 taskMaster.CompletionPercentage = Convert.ToInt32(changeValue);
                                 break;
                         }
@@ -278,7 +284,7 @@ namespace DevTracker.Controllers
         public JsonResult GetTasks(long? projectId, long? taskId)
         {
             var chatList = SelectListFunction.GetTasks(projectId, taskId);
-            return Json(new {chatList}, JsonRequestBehavior.AllowGet);
+            return Json(new { chatList }, JsonRequestBehavior.AllowGet);
         }
     }
 }
