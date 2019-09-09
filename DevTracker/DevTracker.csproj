@@ -987,13 +987,6 @@
     <Content Include="Content\plugins\ladda\js\prism.js" />
     <Content Include="Content\plugins\ladda\js\spin.js" />
     <Content Include="favicon.ico" />
-    <Content Include="FileManagement\Profile\078a859a-e113-40ef-99bc-300826f138f5System.Web.HttpPostedFileWrapper.jpg" />
-    <Content Include="FileManagement\Profile\0e426b23-0c2a-476c-82ef-5c7730d8d856System.Web.HttpPostedFileWrapper.jpg" />
-    <Content Include="FileManagement\Profile\15ae9e82-c523-46a2-bd77-ec8e91ee7a8dSystem.Web.HttpPostedFileWrapper.jpg" />
-    <Content Include="FileManagement\Profile\40b08fbe-5425-44a9-9b2f-a353afbe4d10System.Web.HttpPostedFileWrapper.jpg" />
-    <Content Include="FileManagement\Profile\6eb85477-8d2c-4cb7-bd0c-b570094e7a4eSystem.Web.HttpPostedFileWrapper.jpg" />
-    <Content Include="FileManagement\Profile\818cf385-c53c-46cb-8e9a-c19addb966eaSystem.Web.HttpPostedFileWrapper.jpg" />
-    <Content Include="FileManagement\Profile\ankit.jpg" />
     <Content Include="FileManagement\Profile\ash ketchum.png" />
     <Content Include="FileManagement\Profile\DP.jpg" />
     <Content Include="FileManagement\Profile\ff4ff0c6-6a21-4ba0-b8bf-6a6d65b38d4aSystem.Web.HttpPostedFileWrapper.jpg" />
