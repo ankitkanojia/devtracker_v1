@@ -13,8 +13,8 @@
 
     <!-- Login form -->
     @*<div class="form">*@
-    <div class="m-20 form">
-        <h1 class="text-light">Login to your account</h1>
+    <div class="form">
+        <h1>Login to your account</h1>
         @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { @class = "form-horizontal", @id = "frmLogin" }))
         {
             @Html.AntiForgeryToken()

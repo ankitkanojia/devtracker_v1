@@ -36,8 +36,9 @@ namespace DevTracker.Controllers
 
                 return View(accountVm);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                TempData["Error"] = e.Message;
                 throw;
             }
 
@@ -109,8 +110,9 @@ namespace DevTracker.Controllers
 
                 return RedirectToAction("Login");
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                TempData["Error"] = e.Message;
                 throw;
             }
         }
@@ -149,8 +151,9 @@ namespace DevTracker.Controllers
                 // this clears the Request.IsAuthenticated flag since this triggers a new request
                 return RedirectToLocal();
             }
-            catch
+            catch (Exception e)
             {
+                TempData["Error"] = e.Message;
                 throw;
             }
         }
@@ -168,8 +171,9 @@ namespace DevTracker.Controllers
                 // If we cannot verify if the url is local to our host we redirect to a default location
                 return RedirectToAction("Index", "Dashboard");
             }
-            catch
+            catch (Exception e)
             {
+                TempData["Error"] = e.Message;
                 throw;
             }
         }
@@ -199,7 +203,7 @@ namespace DevTracker.Controllers
                     if (!ModelState.IsValid)
                         return RedirectToAction("Login", "Home", data);
 
-                    //Initialise object of usermaster table
+                    //Initialise object of user master table
                     var userMaster = _entities.UserMasters.FirstOrDefault(s => s.Email == data.Email.Trim());
 
                     //Check that details is not null
@@ -221,7 +225,7 @@ namespace DevTracker.Controllers
                         userMaster.CreatedDate = DateTime.Now;
                         userMaster.IsActive = true;
                         userMaster.IsTermAccept = true;
-                        userMaster.RoleMasterId = (int)EnumList.Roles.Designer;
+                        userMaster.RoleMasterId = (int)EnumList.Roles.Owner;
 
                         //Todo: Email verification task
                         userMaster.IsEmailVerified = true;
@@ -230,14 +234,15 @@ namespace DevTracker.Controllers
                         await _entities.SaveChangesAsync();
 
                         //Create response message
-                        TempData["Success"] = "Registerd done successfully";
+                        TempData["Success"] = "Registration done successfully";
                     }
 
                     return RedirectToAction("Login");
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                TempData["Error"] = e.Message;
                 throw;
             }
         }
@@ -295,8 +300,9 @@ namespace DevTracker.Controllers
                     return View(data);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                TempData["Error"] = e.Message;
                 throw;
             }
         }
@@ -312,7 +318,7 @@ namespace DevTracker.Controllers
 
                     if (userInfo != null)
                     {
-                        if (userInfo.TokensGenerated.Value.AddHours(24) < DateTime.Now)
+                        if (userInfo.TokensGenerated != null && userInfo.TokensGenerated.Value.AddHours(24) < DateTime.Now)
                         {
                             TempData["Error"] = "Link expired.";
                         }
@@ -329,8 +335,9 @@ namespace DevTracker.Controllers
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                TempData["Error"] = e.Message;
                 throw;
             }
             return RedirectToAction("Login");
@@ -373,8 +380,9 @@ namespace DevTracker.Controllers
 
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                TempData["Error"] = e.Message;
                 throw;
             }
 
