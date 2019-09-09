@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
 $(function() {
-	$(function() {
-		// Initialize responsive functionality
-		$('.table-togglable').footable();	
-	});
+    $(function() {
+        // Initialize responsive functionality
+        $(".table-togglable").footable();
+    });
 });

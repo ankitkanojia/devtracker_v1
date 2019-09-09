@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Repository.Models;
-//using static System.Web.Mail.MailFormat;
-//using static System.Web.Mail.SmtpMail;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+//using static System.Web.Mail.MailFormat;
+//using static System.Web.Mail.SmtpMail;
 
 
 namespace Repository.Helpers
@@ -21,7 +21,8 @@ namespace Repository.Helpers
                 using (var db = new DBEntities())
                 {
                     //Get email templete data
-                    var emailTemplete = db.EmailTempletes.FirstOrDefault(s => s.EmailTempleteId == emailTempleteId && s.IsActive && !s.IsDelete);
+                    var emailTemplete = db.EmailTempletes.FirstOrDefault(s =>
+                        s.EmailTempleteId == emailTempleteId && s.IsActive && !s.IsDelete);
 
                     if (emailTemplete != null)
                     {
@@ -68,13 +69,13 @@ namespace Repository.Helpers
 
                         response = true;
                     }
-
                 }
             }
             catch (Exception)
             {
                 response = false;
             }
+
             return response;
         }
     }

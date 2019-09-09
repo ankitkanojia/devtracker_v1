@@ -21,7 +21,7 @@ namespace Repository.Models.ViewModels
         public string Profile { get; set; }
         public string CompanyName { get; set; }
         public string SkypeId { get; set; }
-        public Nullable<System.DateTime> BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
         public string BioStatus { get; set; }
         public string GoogleId { get; set; }
         public bool IsTermAccept { get; set; }

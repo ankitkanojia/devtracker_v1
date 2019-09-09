@@ -6,27 +6,31 @@
 //----------------------------------
 
 $(function() {
-	'use strict';
+    "use strict";
 
-    var editor = CKEDITOR.replace('editor-readonly', {
-        height: '400px',
+    var editor = CKEDITOR.replace("editor-readonly",
+        {
+            height: "400px",
 
-    });
-
-    CKEDITOR.on('instanceReady', function (ev) {
-        document.getElementById('readOnlyOn').style.display = '';
-        editor.on('readOnly', function() {
-            document.getElementById('readOnlyOn').style.display = this.readOnly ? 'none' : '';
-            document.getElementById('readOnlyOff').style.display = this.readOnly ? '' : 'none';
         });
-    });
+
+    CKEDITOR.on("instanceReady",
+        function(ev) {
+            document.getElementById("readOnlyOn").style.display = "";
+            editor.on("readOnly",
+                function() {
+                    document.getElementById("readOnlyOn").style.display = this.readOnly ? "none" : "";
+                    document.getElementById("readOnlyOff").style.display = this.readOnly ? "" : "none";
+                });
+        });
 
     function toggleReadOnly(isReadOnly) {
         editor.setReadOnly(isReadOnly);
     }
-    document.getElementById('readOnlyOn').onclick=function(){ toggleReadOnly() }
-    document.getElementById('readOnlyOff').onclick=function(){ toggleReadOnly(false) }
+
+    document.getElementById("readOnlyOn").onclick = function() { toggleReadOnly() };
+    document.getElementById("readOnlyOff").onclick = function() { toggleReadOnly(false) };
     CKEDITOR.disableAutoInline = true;
-    var editor3 = CKEDITOR.inline('editor-inline');
-	
+    var editor3 = CKEDITOR.inline("editor-inline");
+
 });

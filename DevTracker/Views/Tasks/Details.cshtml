@@ -14,9 +14,7 @@
         padding-right: 5px;
     }
 
-    .taskDetlBody {
-        border-bottom: 1px dotted #1c2b36;
-    }
+    .taskDetlBody { border-bottom: 1px dotted #1c2b36; }
 </style>
 
 
@@ -26,8 +24,12 @@
             <i class="icon-briefcase3 position-left"></i> Task Details
         </div>
         <ul class="breadcrumb">
-            <li><a href="@Url.Action("Index", "Dashboard")"></a></li>
-            <li><a href="@Url.Action("Index", "Dashboard")">Dashboard</a></li>
+            <li>
+                <a href="@Url.Action("Index", "Dashboard")"></a>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "Dashboard")">Dashboard</a>
+            </li>
             <li class="active">Task Details</li>
         </ul>
     </div>
@@ -55,7 +57,7 @@
                         <div class="col-md-12">
                             <h4 class="m-b-10 text-semibold">Description</h4>
                             @Html.Raw(Model.Description)
-                            <hr />
+                            <hr/>
                         </div>
                     </div>
 
@@ -116,19 +118,19 @@
                                 <span class="taskDetlBody">Zemulla</span>
                             </label>
 
-                            <br />
+                            <br/>
                             <label>
                                 <span class="taskDetlHead text-muted">Task Type: </span>
                                 <span class="taskDetlBody">Bug</span>
                             </label>
 
-                            <br />
+                            <br/>
                             <label>
                                 <span class="taskDetlHead text-muted">Task Category: </span>
                                 <span class="taskDetlBody">Logo design</span>
                             </label>
 
-                            <hr />
+                            <hr/>
                             <label>
                                 <span class="taskDetlHead text-muted">Assignee: </span>
                                 <span class="taskDetlBody">
@@ -139,19 +141,19 @@
                                 </span>
                             </label>
 
-                            <br />
+                            <br/>
                             <label>
                                 <span class="taskDetlHead text-muted">Reporter: </span>
                                 <span class="taskDetlBody">Suchit Khunt</span>
                             </label>
 
-                            <br />
+                            <br/>
                             <label>
                                 <span class="taskDetlHead text-muted">Task Priority: </span>
                                 <span class="taskDetlBody">Dropdown</span>
                             </label>
 
-                            <br />
+                            <br/>
                             <label>
                                 <span class="taskDetlHead text-muted">Task Status: </span>
                                 <span class="taskDetlBody">
@@ -161,28 +163,28 @@
                                 </span>
                             </label>
 
-                            <br />
+                            <br/>
                             <label>
                                 <span class="taskDetlHead text-muted">Start date: </span>
                                 <span class="taskDetlBody">16/04/1993</span>
                             </label>
 
-                            <br />
+                            <br/>
                             <label>
                                 <span class="taskDetlHead text-muted">Goal Date: </span>
                                 <span class="taskDetlBody">10/12/2017</span>
                             </label>
 
-                            <br />
+                            <br/>
                             <label>
                                 <span class="taskDetlHead text-muted">Estimate Hours: </span>
                                 <span class="taskDetlBody">200</span>
                             </label>
 
-                            <hr />
+                            <hr/>
                             <label>
                                 <span class="taskDetlHead text-muted">Completion (%) </span>
-                                <br /><br />
+                                <br/><br/>
                                 <div id="noui-slider-connect-lower"></div>
                                 <div class="val-demo m-b-5 text-success">Value: <span id="noui-slider-connect-lower-val"></span></div>
                             </label>
@@ -193,8 +195,6 @@
         </div>
     </div>
 </div>
-
-
 
 
 @section scripts{
@@ -229,21 +229,21 @@
             var changeValue = 0;
 
             switch (id) {
-                case 1:
-                    changeValue = 1;
-                    break;
-                case 2:
-                    changeValue = 2;
-                    break;
-                case 3:
-                    changeValue = 3;
-                    break;
-                case 4:
-                    changeValue = 4;
-                    break;
-                case 5:
-                    changeValue = 5;
-                    break;
+            case 1:
+                changeValue = 1;
+                break;
+            case 2:
+                changeValue = 2;
+                break;
+            case 3:
+                changeValue = 3;
+                break;
+            case 4:
+                changeValue = 4;
+                break;
+            case 5:
+                changeValue = 5;
+                break;
             }
 
             $.ajax({
@@ -251,35 +251,37 @@
                 url: '@Url.Action("ChangeTaskField", "Tasks")',
                 datatype: "json",
                 data: { taskMasterId: taskMasterId, changeType: id, changeValue: changeValue },
-                success: function (data) {
+                success: function(data) {
                 }
             });
         }
 
 
-        $(document).ready(function () {
+        $(document).ready(function() {
 
             //#Start: UI Slider
             var slider_connect_lower = document.getElementById('noui-slider-connect-lower');
-            noUiSlider.create(slider_connect_lower, {
-                start: 0,
-                connect: 'lower',
-                range: {
-                    'min': 0,
-                    'max': 100
-                }
-            });
+            noUiSlider.create(slider_connect_lower,
+                {
+                    start: 0,
+                    connect: 'lower',
+                    range: {
+                        'min': 0,
+                        'max': 100
+                    }
+                });
             $('#noui-slider-connect-lower').css('width', '226px');
             var slider_connect_lower_val = document.getElementById('noui-slider-connect-lower-val');
-            slider_connect_lower.noUiSlider.on('update', function (values, handle) {
-                var value = values[handle];
-                if (handle) {
-                    inputNumber.value = value;
-                } else {
-                    slider_connect_lower_val.innerHTML = Math.round(value);
-                }
-                //slider_connect_lower_val.innerHTML = values[handle];
-            });
+            slider_connect_lower.noUiSlider.on('update',
+                function(values, handle) {
+                    var value = values[handle];
+                    if (handle) {
+                        inputNumber.value = value;
+                    } else {
+                        slider_connect_lower_val.innerHTML = Math.round(value);
+                    }
+                    //slider_connect_lower_val.innerHTML = values[handle];
+                });
             //#End: UI Slider
         });
     </script>

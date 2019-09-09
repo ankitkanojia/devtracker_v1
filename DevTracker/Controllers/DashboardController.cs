@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
-using Repository.Models;
+﻿using System.Linq;
 using System.Web.Mvc;
 using DevTracker.WebHelpers;
 using Repository.Helpers;
+using Repository.Models;
 using Repository.Models.ViewModels;
 
 namespace DevTracker.Controllers
@@ -15,26 +14,22 @@ namespace DevTracker.Controllers
 
         public ActionResult Index()
         {
-            try
+            using (_entities = new DBEntities())
             {
-                using (_entities = new DBEntities())
-                {
-                    var dashboardVm = new DashboardVm();
+                var dashboardVm = new DashboardVm();
 
-                    //Total Resources
-                    var totalUsers = _entities.UserMasters.Where(s => s.RoleMasterId != (int) EnumList.Roles.Owner).ToList();
-                    dashboardVm.Tdesigner = totalUsers.Where(s => s.RoleMasterId == (int) EnumList.Roles.Designer).ToList().Count;
-                    dashboardVm.TprojectManager = totalUsers.Where(s => s.RoleMasterId == (int)EnumList.Roles.Project_Manager).ToList().Count;
-                    dashboardVm.TteamLeader = totalUsers.Where(s => s.RoleMasterId == (int)EnumList.Roles.Team_Leader).ToList().Count;
-                    dashboardVm.TotalResource = totalUsers.Count;
+                //Total Resources
+                var totalUsers = _entities.UserMasters.Where(s => s.RoleMasterId != (int) EnumList.Roles.Owner)
+                    .ToList();
+                dashboardVm.Tdesigner = totalUsers.Where(s => s.RoleMasterId == (int) EnumList.Roles.Developer).ToList()
+                    .Count;
+                dashboardVm.TprojectManager = totalUsers
+                    .Where(s => s.RoleMasterId == (int) EnumList.Roles.Project_Manager).ToList().Count;
+                dashboardVm.TteamLeader = totalUsers.Where(s => s.RoleMasterId == (int) EnumList.Roles.Team_Leader)
+                    .ToList().Count;
+                dashboardVm.TotalResource = totalUsers.Count;
 
-                    return View(dashboardVm);
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
+                return View(dashboardVm);
             }
         }
     }

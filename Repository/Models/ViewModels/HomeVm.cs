@@ -2,7 +2,6 @@
 
 namespace Repository.Models.ViewModels
 {
-
     public class ResetPasswordVm
     {
         [Required]
@@ -13,7 +12,7 @@ namespace Repository.Models.ViewModels
         [DataType(DataType.Password)]
         public string RetypePassword { get; set; }
 
-        
+
         public long UserMasterId { get; set; }
     }
 
@@ -26,11 +25,9 @@ namespace Repository.Models.ViewModels
 
     public class AccountVm
     {
-        [DataType(DataType.Password)]
-        public string PasswordLogin { get; set; }
+        [DataType(DataType.Password)] public string PasswordLogin { get; set; }
 
-        [DataType(DataType.EmailAddress)]
-        public string EmailLogin { get; set; }
+        [DataType(DataType.EmailAddress)] public string EmailLogin { get; set; }
 
         public long UserMasterId { get; set; }
 
@@ -38,17 +35,13 @@ namespace Repository.Models.ViewModels
 
         public bool IsRemember { get; set; }
 
-        [DataType(DataType.Text)]
-        public string Name { get; set; }
+        [DataType(DataType.Text)] public string Name { get; set; }
 
-        [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
+        [DataType(DataType.EmailAddress)] public string Email { get; set; }
 
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
+        [DataType(DataType.Password)] public string Password { get; set; }
 
-        [DataType(DataType.Password)]
-        public string RetypePassword { get; set; }
+        [DataType(DataType.Password)] public string RetypePassword { get; set; }
 
         [StringLength(10, MinimumLength = 10)]
         [DataType(DataType.Text)]
@@ -56,7 +49,6 @@ namespace Repository.Models.ViewModels
 
         public bool IsMailAccountDetails { get; set; }
 
-        [Required]
-        public bool IsTermsAndCondition { get; set; }
+        [Required] public bool IsTermsAndCondition { get; set; }
     }
 }

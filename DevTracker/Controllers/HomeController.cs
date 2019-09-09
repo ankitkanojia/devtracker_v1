@@ -13,16 +13,97 @@ using Repository.Models.ViewModels;
 
 namespace DevTracker.Controllers
 {
-
     public class HomeController : Controller
     {
         private readonly DBEntities _entities = new DBEntities();
 
+        #region --> Registration functionality
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Register(AccountVm data)
+        {
+            try
+            {
+                using (_entities)
+                {
+                    //Confirm that model is valid
+                    if (!ModelState.IsValid)
+                        return RedirectToAction("Login", "Home", data);
+
+                    //Initialise object of user master table
+                    var userMaster = _entities.UserMasters.FirstOrDefault(s => s.Email == data.Email.Trim());
+
+                    //Check that details is not null
+                    if (userMaster != null)
+                    {
+                        TempData["Error"] = "This email already registered with us.";
+                    }
+                    else
+                    {
+                        //Create HASH & SALT
+                        var salt = Utilities.GenerateSalt(32);
+                        var hash = Utilities.GenerateHash(data.Password.Trim(), data.Email.Trim(), salt);
+
+                        //Create instance of table
+                        userMaster = new UserMaster();
+                        userMaster.CopyProperties(data);
+                        userMaster.Hash = hash;
+                        userMaster.Salt = salt;
+                        userMaster.CreatedDate = DateTime.Now;
+                        userMaster.IsActive = true;
+                        userMaster.IsTermAccept = true;
+                        userMaster.RoleMasterId = (int) EnumList.Roles.Owner;
+
+                        //Todo: Email verification task
+                        userMaster.IsEmailVerified = true;
+
+                        _entities.UserMasters.Add(userMaster);
+                        await _entities.SaveChangesAsync();
+
+                        //Create response message
+                        TempData["Success"] = "Registration done successfully";
+                    }
+
+                    return RedirectToAction("Login");
+                }
+            }
+            catch (Exception e)
+            {
+                TempData["Error"] = e.Message;
+                throw;
+            }
+        }
+
+        #endregion
+
+        public ActionResult E404()
+        {
+            return View();
+        }
+
+        public ActionResult E500()
+        {
+            return View();
+        }
+
+        public ActionResult Maintenance()
+        {
+            return View();
+        }
+
+        public ActionResult TestPage()
+        {
+            return View();
+        }
+
         #region --> Login functionality
+
         public ActionResult Login(string returnUrl)
         {
             try
             {
+
                 // We do not want to use any existing identity information
                 EnsureLoggedOut();
 
@@ -32,7 +113,7 @@ namespace DevTracker.Controllers
                 if (TempData["Error"] != null)
                     TempData["Error"] = TempData["Error"];
 
-                var accountVm = new AccountVm { ReturnUrl = returnUrl };
+                var accountVm = new AccountVm {ReturnUrl = returnUrl};
 
                 return View(accountVm);
             }
@@ -41,7 +122,6 @@ namespace DevTracker.Controllers
                 TempData["Error"] = e.Message;
                 throw;
             }
-
         }
 
         [HttpPost]
@@ -65,7 +145,8 @@ namespace DevTracker.Controllers
                         var oldHashValue = userMaster.Hash;
                         var salt = userMaster.Salt;
 
-                        var isLogin = Utilities.CompareHashValue(data.PasswordLogin.Trim(), userMaster.Email, oldHashValue, salt);
+                        var isLogin = Utilities.CompareHashValue(data.PasswordLogin.Trim(), userMaster.Email,
+                            oldHashValue, salt);
 
                         if (isLogin)
                         {
@@ -96,16 +177,13 @@ namespace DevTracker.Controllers
                             // return RedirectToAction("Index", "Dashboard");
                             return RedirectToLocal(data.ReturnUrl);
                         }
-                        else
-                        {
-                            TempData["Error"] = "Access Denied! You enter wrong credentials!";
-                        }
+
+                        TempData["Error"] = "Access Denied! You enter wrong credentials!";
                     }
                     else
                     {
                         TempData["Error"] = "Access Denied! You enter wrong credentials!";
                     }
-
                 }
 
                 return RedirectToAction("Login");
@@ -190,65 +268,8 @@ namespace DevTracker.Controllers
 
         #endregion
 
-        #region --> Registration functionality
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(AccountVm data)
-        {
-            try
-            {
-                using (_entities)
-                {
-                    //Confirm that model is valid
-                    if (!ModelState.IsValid)
-                        return RedirectToAction("Login", "Home", data);
-
-                    //Initialise object of user master table
-                    var userMaster = _entities.UserMasters.FirstOrDefault(s => s.Email == data.Email.Trim());
-
-                    //Check that details is not null
-                    if (userMaster != null)
-                    {
-                        TempData["Error"] = "This email already registered with us.";
-                    }
-                    else
-                    {
-                        //Create HASH & SALT
-                        var salt = Utilities.GenerateSalt(32);
-                        var hash = Utilities.GenerateHash(data.Password.Trim(), data.Email.Trim(), salt);
-
-                        //Create instance of table
-                        userMaster = new UserMaster();
-                        userMaster.CopyProperties(data);
-                        userMaster.Hash = hash;
-                        userMaster.Salt = salt;
-                        userMaster.CreatedDate = DateTime.Now;
-                        userMaster.IsActive = true;
-                        userMaster.IsTermAccept = true;
-                        userMaster.RoleMasterId = (int)EnumList.Roles.Owner;
-
-                        //Todo: Email verification task
-                        userMaster.IsEmailVerified = true;
-
-                        _entities.UserMasters.Add(userMaster);
-                        await _entities.SaveChangesAsync();
-
-                        //Create response message
-                        TempData["Success"] = "Registration done successfully";
-                    }
-
-                    return RedirectToAction("Login");
-                }
-            }
-            catch (Exception e)
-            {
-                TempData["Error"] = e.Message;
-                throw;
-            }
-        }
-        #endregion
-
         #region --> Recover & Reset password functionality
+
         public ActionResult RecoverPassword()
         {
             return View();
@@ -272,7 +293,8 @@ namespace DevTracker.Controllers
                     {
                         //Generate and save token
                         var randomStringGenerator = new Utilities.RandomStringGenerator();
-                        userInfo.Tokens = randomStringGenerator.GetRandomString(64, Utilities.RandomStringGenerator.AlphanumericCaps.ToCharArray());
+                        userInfo.Tokens = randomStringGenerator.GetRandomString(64,
+                            Utilities.RandomStringGenerator.AlphanumericCaps.ToCharArray());
                         userInfo.TokensGenerated = DateTime.Now;
                         _entities.Entry(userInfo);
                         _entities.SaveChanges();
@@ -285,7 +307,8 @@ namespace DevTracker.Controllers
                         };
 
                         //Sent email from HERE
-                        var isEailSent = SendEmail.Templete(replacement, data.Email, (int)EnumList.EmailTemplete.ForgotPassword);
+                        var isEailSent = SendEmail.Templete(replacement, data.Email,
+                            (int) EnumList.EmailTemplete.ForgotPassword);
 
                         if (isEailSent)
                             TempData["Success"] = "Please check your mailbox.";
@@ -318,13 +341,14 @@ namespace DevTracker.Controllers
 
                     if (userInfo != null)
                     {
-                        if (userInfo.TokensGenerated != null && userInfo.TokensGenerated.Value.AddHours(24) < DateTime.Now)
+                        if (userInfo.TokensGenerated != null &&
+                            userInfo.TokensGenerated.Value.AddHours(24) < DateTime.Now)
                         {
                             TempData["Error"] = "Link expired.";
                         }
                         else
                         {
-                            var resetPasswordVm = new ResetPasswordVm { UserMasterId = userInfo.UserMasterId };
+                            var resetPasswordVm = new ResetPasswordVm {UserMasterId = userInfo.UserMasterId};
 
                             return View(resetPasswordVm);
                         }
@@ -340,6 +364,7 @@ namespace DevTracker.Controllers
                 TempData["Error"] = e.Message;
                 throw;
             }
+
             return RedirectToAction("Login");
         }
 
@@ -371,13 +396,9 @@ namespace DevTracker.Controllers
                         TempData["Success"] = "Your password change successfully";
 
                         return View("Login");
-
-                    }
-                    else
-                    {
-                        TempData["Error"] = "Something went wrong. Please try after some time";
                     }
 
+                    TempData["Error"] = "Something went wrong. Please try after some time";
                 }
             }
             catch (Exception e)
@@ -388,28 +409,7 @@ namespace DevTracker.Controllers
 
             return View(data);
         }
+
         #endregion
-
-        public ActionResult E404()
-        {
-            return View();
-        }
-
-        public ActionResult E500()
-        {
-            return View();
-        }
-
-        public ActionResult Maintenance()
-        {
-            return View();
-        }
-
-        public ActionResult TestPage()
-        {
-            return View();
-        }
     }
-
-
 }

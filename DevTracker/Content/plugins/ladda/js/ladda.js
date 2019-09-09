@@ -6,407 +6,405 @@
  * Copyright (C) 2014 Hakim El Hattab, http://hakim.se
  */
 /* jshint node:true, browser:true */
-(function( root, factory ) {
-
-	// CommonJS
-	if( typeof exports === 'object' )  {
-		module.exports = factory(require('spin.js'));
-	}
-	// AMD module
-	else if( typeof define === 'function' && define.amd ) {
-		define( [ 'spin' ], factory );
-	}
-	// Browser global
-	else {
-		root.Ladda = factory( root.Spinner );
-	}
+(function(root, factory) {
+
+    // CommonJS
+    if (typeof exports === "object") {
+        module.exports = factory(require("spin.js"));
+    }
+    // AMD module
+    else if (typeof define === "function" && define.amd) {
+        define(["spin"], factory);
+    }
+    // Browser global
+    else {
+        root.Ladda = factory(root.Spinner);
+    }
 
-}
-(this, function( Spinner ) {
-	'use strict';
-
-	// All currently instantiated instances of Ladda
-	var ALL_INSTANCES = [];
+}(this,
+    function(Spinner) {
+        "use strict";
 
-	/**
-	 * Creates a new instance of Ladda which wraps the
-	 * target button element.
-	 *
-	 * @return An API object that can be used to control
-	 * the loading animation state.
-	 */
-	function create( button ) {
-
-		if( typeof button === 'undefined' ) {
-			console.warn( "Ladda button target must be defined." );
-			return;
-		}
+        // All currently instantiated instances of Ladda
+        var ALL_INSTANCES = [];
 
-		// The text contents must be wrapped in a ladda-label
-		// element, create one if it doesn't already exist
-		if( !button.querySelector( '.ladda-label' ) ) {
-			button.innerHTML = '<span class="ladda-label">'+ button.innerHTML +'</span>';
-		}
-
-		// The spinner component
-		var spinner;
-
-		// Wrapper element for the spinner
-		var spinnerWrapper = document.createElement( 'span' );
-		spinnerWrapper.className = 'ladda-spinner';
-		button.appendChild( spinnerWrapper );
-
-		// Timer used to delay starting/stopping
-		var timer;
+        /**
+         * Creates a new instance of Ladda which wraps the
+         * target button element.
+         *
+         * @return An API object that can be used to control
+         * the loading animation state.
+         */
+        function create(button) {
 
-		var instance = {
+            if (typeof button === "undefined") {
+                console.warn("Ladda button target must be defined.");
+                return;
+            }
 
-			/**
-			 * Enter the loading state.
-			 */
-			start: function() {
+            // The text contents must be wrapped in a ladda-label
+            // element, create one if it doesn't already exist
+            if (!button.querySelector(".ladda-label")) {
+                button.innerHTML = '<span class="ladda-label">' + button.innerHTML + "</span>";
+            }
+
+            // The spinner component
+            var spinner;
+
+            // Wrapper element for the spinner
+            var spinnerWrapper = document.createElement("span");
+            spinnerWrapper.className = "ladda-spinner";
+            button.appendChild(spinnerWrapper);
+
+            // Timer used to delay starting/stopping
+            var timer;
 
-				// Create the spinner if it doesn't already exist
-				if( !spinner ) spinner = createSpinner( button );
+            var instance = {
 
-				button.setAttribute( 'disabled', '' );
-				button.setAttribute( 'data-loading', '' );
+                /**
+                 * Enter the loading state.
+                 */
+                start: function() {
 
-				clearTimeout( timer );
-				spinner.spin( spinnerWrapper );
+                    // Create the spinner if it doesn't already exist
+                    if (!spinner) spinner = createSpinner(button);
 
-				this.setProgress( 0 );
+                    button.setAttribute("disabled", "");
+                    button.setAttribute("data-loading", "");
 
-				return this; // chain
+                    clearTimeout(timer);
+                    spinner.spin(spinnerWrapper);
 
-			},
+                    this.setProgress(0);
 
-			/**
-			 * Enter the loading state, after a delay.
-			 */
-			startAfter: function( delay ) {
+                    return this; // chain
 
-				clearTimeout( timer );
-				timer = setTimeout( function() { instance.start(); }, delay );
+                },
 
-				return this; // chain
+                /**
+                 * Enter the loading state, after a delay.
+                 */
+                startAfter: function(delay) {
 
-			},
+                    clearTimeout(timer);
+                    timer = setTimeout(function() { instance.start(); }, delay);
 
-			/**
-			 * Exit the loading state.
-			 */
-			stop: function() {
+                    return this; // chain
 
-				button.removeAttribute( 'disabled' );
-				button.removeAttribute( 'data-loading' );
+                },
 
-				// Kill the animation after a delay to make sure it
-				// runs for the duration of the button transition
-				clearTimeout( timer );
+                /**
+                 * Exit the loading state.
+                 */
+                stop: function() {
 
-				if( spinner ) {
-					timer = setTimeout( function() { spinner.stop(); }, 1000 );
-				}
+                    button.removeAttribute("disabled");
+                    button.removeAttribute("data-loading");
 
-				return this; // chain
+                    // Kill the animation after a delay to make sure it
+                    // runs for the duration of the button transition
+                    clearTimeout(timer);
 
-			},
+                    if (spinner) {
+                        timer = setTimeout(function() { spinner.stop(); }, 1000);
+                    }
 
-			/**
-			 * Toggle the loading state on/off.
-			 */
-			toggle: function() {
+                    return this; // chain
 
-				if( this.isLoading() ) {
-					this.stop();
-				}
-				else {
-					this.start();
-				}
+                },
 
-				return this; // chain
+                /**
+                 * Toggle the loading state on/off.
+                 */
+                toggle: function() {
 
-			},
+                    if (this.isLoading()) {
+                        this.stop();
+                    } else {
+                        this.start();
+                    }
 
-			/**
-			 * Sets the width of the visual progress bar inside of
-			 * this Ladda button
-			 *
-			 * @param {Number} progress in the range of 0-1
-			 */
-			setProgress: function( progress ) {
+                    return this; // chain
 
-				// Cap it
-				progress = Math.max( Math.min( progress, 1 ), 0 );
+                },
 
-				var progressElement = button.querySelector( '.ladda-progress' );
+                /**
+                 * Sets the width of the visual progress bar inside of
+                 * this Ladda button
+                 *
+                 * @param {Number} progress in the range of 0-1
+                 */
+                setProgress: function(progress) {
 
-				// Remove the progress bar if we're at 0 progress
-				if( progress === 0 && progressElement && progressElement.parentNode ) {
-					progressElement.parentNode.removeChild( progressElement );
-				}
-				else {
-					if( !progressElement ) {
-						progressElement = document.createElement( 'div' );
-						progressElement.className = 'ladda-progress';
-						button.appendChild( progressElement );
-					}
+                    // Cap it
+                    progress = Math.max(Math.min(progress, 1), 0);
 
-					progressElement.style.width = ( ( progress || 0 ) * button.offsetWidth ) + 'px';
-				}
+                    var progressElement = button.querySelector(".ladda-progress");
 
-			},
+                    // Remove the progress bar if we're at 0 progress
+                    if (progress === 0 && progressElement && progressElement.parentNode) {
+                        progressElement.parentNode.removeChild(progressElement);
+                    } else {
+                        if (!progressElement) {
+                            progressElement = document.createElement("div");
+                            progressElement.className = "ladda-progress";
+                            button.appendChild(progressElement);
+                        }
 
-			enable: function() {
+                        progressElement.style.width = ((progress || 0) * button.offsetWidth) + "px";
+                    }
 
-				this.stop();
+                },
 
-				return this; // chain
+                enable: function() {
 
-			},
+                    this.stop();
 
-			disable: function () {
+                    return this; // chain
 
-				this.stop();
-				button.setAttribute( 'disabled', '' );
+                },
 
-				return this; // chain
+                disable: function() {
 
-			},
+                    this.stop();
+                    button.setAttribute("disabled", "");
 
-			isLoading: function() {
+                    return this; // chain
 
-				return button.hasAttribute( 'data-loading' );
+                },
 
-			},
+                isLoading: function() {
 
-			remove: function() {
+                    return button.hasAttribute("data-loading");
 
-				clearTimeout( timer );
+                },
 
-				button.removeAttribute( 'disabled', '' );
-				button.removeAttribute( 'data-loading', '' );
+                remove: function() {
 
-				if( spinner ) {
-					spinner.stop();
-					spinner = null;
-				}
+                    clearTimeout(timer);
 
-				for( var i = 0, len = ALL_INSTANCES.length; i < len; i++ ) {
-					if( instance === ALL_INSTANCES[i] ) {
-						ALL_INSTANCES.splice( i, 1 );
-						break;
-					}
-				}
+                    button.removeAttribute("disabled", "");
+                    button.removeAttribute("data-loading", "");
 
-			}
+                    if (spinner) {
+                        spinner.stop();
+                        spinner = null;
+                    }
 
-		};
+                    for (var i = 0, len = ALL_INSTANCES.length; i < len; i++) {
+                        if (instance === ALL_INSTANCES[i]) {
+                            ALL_INSTANCES.splice(i, 1);
+                            break;
+                        }
+                    }
 
-		ALL_INSTANCES.push( instance );
+                }
 
-		return instance;
+            };
 
-	}
+            ALL_INSTANCES.push(instance);
 
-	/**
-	* Get the first ancestor node from an element, having a
-	* certain type.
-	*
-	* @param elem An HTML element
-	* @param type an HTML tag type (uppercased)
-	*
-	* @return An HTML element
-	*/
-	function getAncestorOfTagType( elem, type ) {
+            return instance;
 
-		while ( elem.parentNode && elem.tagName !== type ) {
-			elem = elem.parentNode;
-		}
+        }
 
-		return ( type === elem.tagName ) ? elem : undefined;
+        /**
+        * Get the first ancestor node from an element, having a
+        * certain type.
+        *
+        * @param elem An HTML element
+        * @param type an HTML tag type (uppercased)
+        *
+        * @return An HTML element
+        */
+        function getAncestorOfTagType(elem, type) {
 
-	}
+            while (elem.parentNode && elem.tagName !== type) {
+                elem = elem.parentNode;
+            }
 
-	/**
-	 * Returns a list of all inputs in the given form that
-	 * have their `required` attribute set.
-	 *
-	 * @param form The from HTML element to look in
-	 *
-	 * @return A list of elements
-	 */
-	function getRequiredFields( form ) {
+            return (type === elem.tagName) ? elem : undefined;
 
-		var requirables = [ 'input', 'textarea' ];
-		var inputs = [];
+        }
 
-		for( var i = 0; i < requirables.length; i++ ) {
-			var candidates = form.getElementsByTagName( requirables[i] );
-			for( var j = 0; j < candidates.length; j++ ) {
-				if ( candidates[j].hasAttribute( 'required' ) ) {
-					inputs.push( candidates[j] );
-				}
-			}
-		}
+        /**
+         * Returns a list of all inputs in the given form that
+         * have their `required` attribute set.
+         *
+         * @param form The from HTML element to look in
+         *
+         * @return A list of elements
+         */
+        function getRequiredFields(form) {
 
-		return inputs;
+            var requirables = ["input", "textarea"];
+            var inputs = [];
 
-	}
+            for (var i = 0; i < requirables.length; i++) {
+                var candidates = form.getElementsByTagName(requirables[i]);
+                for (var j = 0; j < candidates.length; j++) {
+                    if (candidates[j].hasAttribute("required")) {
+                        inputs.push(candidates[j]);
+                    }
+                }
+            }
 
+            return inputs;
 
-	/**
-	 * Binds the target buttons to automatically enter the
-	 * loading state when clicked.
-	 *
-	 * @param target Either an HTML element or a CSS selector.
-	 * @param options
-	 *          - timeout Number of milliseconds to wait before
-	 *            automatically cancelling the animation.
-	 */
-	function bind( target, options ) {
+        }
 
-		options = options || {};
 
-		var targets = [];
+        /**
+         * Binds the target buttons to automatically enter the
+         * loading state when clicked.
+         *
+         * @param target Either an HTML element or a CSS selector.
+         * @param options
+         *          - timeout Number of milliseconds to wait before
+         *            automatically cancelling the animation.
+         */
+        function bind(target, options) {
 
-		if( typeof target === 'string' ) {
-			targets = toArray( document.querySelectorAll( target ) );
-		}
-		else if( typeof target === 'object' && typeof target.nodeName === 'string' ) {
-			targets = [ target ];
-		}
+            options = options || {};
 
-		for( var i = 0, len = targets.length; i < len; i++ ) {
+            var targets = [];
 
-			(function() {
-				var element = targets[i];
+            if (typeof target === "string") {
+                targets = toArray(document.querySelectorAll(target));
+            } else if (typeof target === "object" && typeof target.nodeName === "string") {
+                targets = [target];
+            }
 
-				// Make sure we're working with a DOM element
-				if( typeof element.addEventListener === 'function' ) {
-					var instance = create( element );
-					var timeout = -1;
+            for (var i = 0, len = targets.length; i < len; i++) {
 
-					element.addEventListener( 'click', function( event ) {
+                (function() {
+                    var element = targets[i];
 
-						// If the button belongs to a form, make sure all the
-						// fields in that form are filled out
-						var valid = true;
-						var form = getAncestorOfTagType( element, 'FORM' );
+                    // Make sure we're working with a DOM element
+                    if (typeof element.addEventListener === "function") {
+                        var instance = create(element);
+                        var timeout = -1;
 
-						if( typeof form !== 'undefined' ) {
-							var requireds = getRequiredFields( form );
-							for( var i = 0; i < requireds.length; i++ ) {
-								// Alternatively to this trim() check,
-								// we could have use .checkValidity() or .validity.valid
-								if( requireds[i].value.replace( /^\s+|\s+$/g, '' ) === '' ) {
-									valid = false;
-								}
-							}
-						}
+                        element.addEventListener("click",
+                            function(event) {
 
-						if( valid ) {
-							// This is asynchronous to avoid an issue where setting
-							// the disabled attribute on the button prevents forms
-							// from submitting
-							instance.startAfter( 1 );
+                                // If the button belongs to a form, make sure all the
+                                // fields in that form are filled out
+                                var valid = true;
+                                var form = getAncestorOfTagType(element, "FORM");
 
-							// Set a loading timeout if one is specified
-							if( typeof options.timeout === 'number' ) {
-								clearTimeout( timeout );
-								timeout = setTimeout( instance.stop, options.timeout );
-							}
+                                if (typeof form !== "undefined") {
+                                    var requireds = getRequiredFields(form);
+                                    for (var i = 0; i < requireds.length; i++) {
+                                        // Alternatively to this trim() check,
+                                        // we could have use .checkValidity() or .validity.valid
+                                        if (requireds[i].value.replace(/^\s+|\s+$/g, "") === "") {
+                                            valid = false;
+                                        }
+                                    }
+                                }
 
-							// Invoke callbacks
-							if( typeof options.callback === 'function' ) {
-								options.callback.apply( null, [ instance ] );
-							}
-						}
+                                if (valid) {
+                                    // This is asynchronous to avoid an issue where setting
+                                    // the disabled attribute on the button prevents forms
+                                    // from submitting
+                                    instance.startAfter(1);
 
-					}, false );
-				}
-			})();
+                                    // Set a loading timeout if one is specified
+                                    if (typeof options.timeout === "number") {
+                                        clearTimeout(timeout);
+                                        timeout = setTimeout(instance.stop, options.timeout);
+                                    }
 
-		}
+                                    // Invoke callbacks
+                                    if (typeof options.callback === "function") {
+                                        options.callback.apply(null, [instance]);
+                                    }
+                                }
 
-	}
+                            },
+                            false);
+                    }
+                })();
 
-	/**
-	 * Stops ALL current loading animations.
-	 */
-	function stopAll() {
+            }
 
-		for( var i = 0, len = ALL_INSTANCES.length; i < len; i++ ) {
-			ALL_INSTANCES[i].stop();
-		}
+        }
 
-	}
+        /**
+         * Stops ALL current loading animations.
+         */
+        function stopAll() {
 
-	function createSpinner( button ) {
+            for (var i = 0, len = ALL_INSTANCES.length; i < len; i++) {
+                ALL_INSTANCES[i].stop();
+            }
 
-		var height = button.offsetHeight,
-			spinnerColor;
+        }
 
-		if( height === 0 ) {
-			// We may have an element that is not visible so
-			// we attempt to get the height in a different way
-			height = parseFloat( window.getComputedStyle( button ).height );
-		}
+        function createSpinner(button) {
 
-		// If the button is tall we can afford some padding
-		if( height > 32 ) {
-			height *= 0.8;
-		}
+            var height = button.offsetHeight,
+                spinnerColor;
 
-		// Prefer an explicit height if one is defined
-		if( button.hasAttribute( 'data-spinner-size' ) ) {
-			height = parseInt( button.getAttribute( 'data-spinner-size' ), 10 );
-		}
+            if (height === 0) {
+                // We may have an element that is not visible so
+                // we attempt to get the height in a different way
+                height = parseFloat(window.getComputedStyle(button).height);
+            }
 
-		// Allow buttons to specify the color of the spinner element
-		if( button.hasAttribute( 'data-spinner-color' ) ) {
-			spinnerColor = button.getAttribute( 'data-spinner-color' );
-		}
+            // If the button is tall we can afford some padding
+            if (height > 32) {
+                height *= 0.8;
+            }
 
-		var lines = 12,
-			radius = height * 0.2,
-			length = radius * 0.6,
-			width = radius < 7 ? 2 : 3;
+            // Prefer an explicit height if one is defined
+            if (button.hasAttribute("data-spinner-size")) {
+                height = parseInt(button.getAttribute("data-spinner-size"), 10);
+            }
 
-		return new Spinner( {
-			color: spinnerColor || '#fff',
-			lines: lines,
-			radius: radius,
-			length: length,
-			width: width,
-			zIndex: 'auto',
-			top: 'auto',
-			left: 'auto',
-			className: ''
-		} );
+            // Allow buttons to specify the color of the spinner element
+            if (button.hasAttribute("data-spinner-color")) {
+                spinnerColor = button.getAttribute("data-spinner-color");
+            }
 
-	}
+            var lines = 12,
+                radius = height * 0.2,
+                length = radius * 0.6,
+                width = radius < 7 ? 2 : 3;
 
-	function toArray( nodes ) {
+            return new Spinner({
+                color: spinnerColor || "#fff",
+                lines: lines,
+                radius: radius,
+                length: length,
+                width: width,
+                zIndex: "auto",
+                top: "auto",
+                left: "auto",
+                className: ""
+            });
 
-		var a = [];
+        }
 
-		for ( var i = 0; i < nodes.length; i++ ) {
-			a.push( nodes[ i ] );
-		}
+        function toArray(nodes) {
 
-		return a;
+            var a = [];
 
-	}
+            for (var i = 0; i < nodes.length; i++) {
+                a.push(nodes[i]);
+            }
 
-	// Public API
-	return {
+            return a;
 
-		bind: bind,
-		create: create,
-		stopAll: stopAll
+        }
 
-	};
+        // Public API
+        return {
+            bind: bind,
+            create: create,
+            stopAll: stopAll
 
-}));
+        };
+
+    }));

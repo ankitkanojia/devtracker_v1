@@ -15,20 +15,20 @@
     @*<div class="form">*@
     <div class="form">
         <h1>Login to your account</h1>
-        @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { @class = "form-horizontal", @id = "frmLogin" }))
+        @using (Html.BeginForm("Login", "Home", FormMethod.Post, new {@class = "form-horizontal", id = "frmLogin"}))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(s => s.ReturnUrl)
 
             <div class="form-group">
                 <div class="form-group has-feedback has-feedback-left">
-                    @Html.TextBoxFor(s => s.EmailLogin, new { @class = "form-control", @placeholder = "abc@xyz.com" })
+                    @Html.TextBoxFor(s => s.EmailLogin, new {@class = "form-control", placeholder = "abc@xyz.com"})
                     <div class="form-control-feedback">
                         <i class="icon-envelop"></i>
                     </div>
                 </div>
                 <div class="form-group has-feedback has-feedback-left">
-                    @Html.PasswordFor(s => s.PasswordLogin, new { @class = "form-control", @placeholder = "XXXXXX" })
+                    @Html.PasswordFor(s => s.PasswordLogin, new {@class = "form-control", placeholder = "XXXXXX"})
                     <div class="form-control-feedback">
                         <i class="icon-key"></i>
                     </div>
@@ -36,7 +36,7 @@
                 <div class="login-options">
                     <div class="checkbox">
                         <label>
-                            @Html.CheckBoxFor(s => s.IsRemember, new { @class = "styled" })
+                            @Html.CheckBoxFor(s => s.IsRemember, new {@class = "styled"})
                             Remember me
                         </label>
                     </div>
@@ -50,38 +50,38 @@
     <!-- Registration form -->
     <div class="form">
         <h1>Create an account</h1>
-        @using (Html.BeginForm("Register", "Home", FormMethod.Post, new { @id = "frmRegister", @class = "form-horizontal" }))
+        @using (Html.BeginForm("Register", "Home", FormMethod.Post, new {id = "frmRegister", @class = "form-horizontal"}))
         {
             @Html.AntiForgeryToken()
             <div class="form-group">
                 <div class="form-group has-feedback has-feedback-left">
-                    @Html.TextBoxFor(s => s.Name, new { @class = "form-control", @placeholder = "Joe Smith" })
+                    @Html.TextBoxFor(s => s.Name, new {@class = "form-control", placeholder = "Joe Smith"})
                     <div class="form-control-feedback">
                         <i class="icon-user"></i>
                     </div>
                 </div>
 
                 <div class="form-group has-feedback has-feedback-left">
-                    @Html.TextBoxFor(s => s.Email, new { @class = "form-control", @placeholder = "abc@xyz.com" })
+                    @Html.TextBoxFor(s => s.Email, new {@class = "form-control", placeholder = "abc@xyz.com"})
                     <div class="form-control-feedback">
                         <i class="icon-envelop"></i>
                     </div>
                 </div>
 
                 <div class="form-group has-feedback has-feedback-left">
-                    @Html.PasswordFor(s => s.Password, new { @class = "form-control", @placeholder = "XXXXXX" })
+                    @Html.PasswordFor(s => s.Password, new {@class = "form-control", placeholder = "XXXXXX"})
                     <div class="form-control-feedback">
                         <i class="icon-key"></i>
                     </div>
                 </div>
                 <div class="form-group has-feedback has-feedback-left">
-                    @Html.PasswordFor(s => s.RetypePassword, new { @class = "form-control", @placeholder = "XXXXXX" })
+                    @Html.PasswordFor(s => s.RetypePassword, new {@class = "form-control", placeholder = "XXXXXX"})
                     <div class="form-control-feedback">
                         <i class="icon-key"></i>
                     </div>
                 </div>
                 <div class="form-group has-feedback has-feedback-left">
-                    @Html.TextBoxFor(s => s.Mobile, new { @maxlength = "10", @class = "form-control", @placeholder = "99xxxxxxxx" })
+                    @Html.TextBoxFor(s => s.Mobile, new {maxlength = "10", @class = "form-control", placeholder = "99xxxxxxxx"})
                     <div class="form-control-feedback">
                         <i class="icon-mobile"></i>
                     </div>
@@ -89,14 +89,14 @@
                 <div class="login-options">
                     <div class="checkbox">
                         <label>
-                            @Html.CheckBoxFor(s => s.IsMailAccountDetails, new { @class = "styled" })
+                            @Html.CheckBoxFor(s => s.IsMailAccountDetails, new {@class = "styled"})
                             Mail me my account details
                         </label>
                     </div>
                     <div class="form-group">
                         <div class="checkbox">
                             <label>
-                                @Html.CheckBoxFor(s => s.IsTermsAndCondition, new { @class = "styled" })
+                                @Html.CheckBoxFor(s => s.IsTermsAndCondition, new {@class = "styled"})
                                 Accept <a href="#">terms &amp; conditions</a>
                             </label>
                         </div>
@@ -116,7 +116,7 @@
 
 @section Scripts{
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             //Login Form validation HERE
             $("#frmLogin").validate({
                 rules: {
@@ -130,22 +130,28 @@
                 },
                 ignore: 'input[type=hidden], .select2-search__field',
                 errorClass: 'validation-error',
-                highlight: function (element, errorClass) {
+                highlight: function(element, errorClass) {
                     $(element).removeClass(errorClass);
                 },
-                unhighlight: function (element, errorClass) {
+                unhighlight: function(element, errorClass) {
                     $(element).removeClass(errorClass);
                 },
-                errorPlacement: function (error, element) {
-                    if (element.parents('div').hasClass("checker") || element.parents('div').hasClass("choice") || element.parent().hasClass('bootstrap-switch-container')) {
-                        if (element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
+                errorPlacement: function(error, element) {
+                    if (element.parents('div').hasClass("checker") ||
+                        element.parents('div').hasClass("choice") ||
+                        element.parent().hasClass('bootstrap-switch-container')) {
+                        if (element.parents('label').hasClass('checkbox-inline') ||
+                            element.parents('label').hasClass('radio-inline')) {
                             error.appendTo(element.parent().parent().parent().parent());
                         } else {
                             error.appendTo(element.parent().parent().parent().parent().parent());
                         }
-                    } else if (element.parents('div').hasClass('has-feedback') || element.hasClass('select2-hidden-accessible')) {
+                    } else if (element.parents('div').hasClass('has-feedback') ||
+                        element.hasClass('select2-hidden-accessible')) {
                         error.appendTo(element.parent());
-                    } else if (element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline') || element.parents('div').hasClass('checkbox-single')) {
+                    } else if (element.parents('label').hasClass('checkbox-inline') ||
+                        element.parents('label').hasClass('radio-inline') ||
+                        element.parents('div').hasClass('checkbox-single')) {
                         error.appendTo(element.parent().parent());
                     } else if (element.parents('div').hasClass('checkbox-group')) {
                         error.appendTo(element.parent().parent().parent());
@@ -187,22 +193,28 @@
                 ignore: 'input[type=hidden], .select2-search__field',
                 errorClass: 'validation-error',
                 successClass: 'validation-success',
-                highlight: function (element, errorClass) {
+                highlight: function(element, errorClass) {
                     $(element).removeClass(errorClass);
                 },
-                unhighlight: function (element, errorClass) {
+                unhighlight: function(element, errorClass) {
                     $(element).removeClass(errorClass);
                 },
-                errorPlacement: function (error, element) {
-                    if (element.parents('div').hasClass("checker") || element.parents('div').hasClass("choice") || element.parent().hasClass('bootstrap-switch-container')) {
-                        if (element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
+                errorPlacement: function(error, element) {
+                    if (element.parents('div').hasClass("checker") ||
+                        element.parents('div').hasClass("choice") ||
+                        element.parent().hasClass('bootstrap-switch-container')) {
+                        if (element.parents('label').hasClass('checkbox-inline') ||
+                            element.parents('label').hasClass('radio-inline')) {
                             error.appendTo(element.parent().parent().parent().parent());
                         } else {
                             error.appendTo(element.parent().parent().parent().parent().parent());
                         }
-                    } else if (element.parents('div').hasClass('has-feedback') || element.hasClass('select2-hidden-accessible')) {
+                    } else if (element.parents('div').hasClass('has-feedback') ||
+                        element.hasClass('select2-hidden-accessible')) {
                         error.appendTo(element.parent());
-                    } else if (element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline') || element.parents('div').hasClass('checkbox-single')) {
+                    } else if (element.parents('label').hasClass('checkbox-inline') ||
+                        element.parents('label').hasClass('radio-inline') ||
+                        element.parents('div').hasClass('checkbox-single')) {
                         error.appendTo(element.parent().parent());
                     } else if (element.parents('div').hasClass('checkbox-group')) {
                         error.appendTo(element.parent().parent().parent());
@@ -213,11 +225,10 @@
                     }
                 },
                 validClass: "validation-success",
-                success: function (label) {
+                success: function(label) {
                     label.addClass("validation-success").text("Done");
                 }
             });
         });
     </script>
 }
-

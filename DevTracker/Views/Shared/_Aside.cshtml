@@ -1,5 +1,4 @@
-﻿@using Repository.Helpers
-
+﻿@using Newtonsoft.Json
 <aside class="menu">
     <div class="left-aside-container">
         <!-- User profile -->
@@ -17,7 +16,7 @@
                                 <a href="#">
                                     <small>
                                         @{
-                                            var role = ((EnumList.Roles)Convert.ToInt64(CookieHelper.GetCookie(CookieName.RoleMasterId))).ToString().Replace('_', ' ');
+                                            var role = ((EnumList.Roles) Convert.ToInt64(CookieHelper.GetCookie(CookieName.RoleMasterId))).ToString().Replace('_', ' ');
                                         }
 
                                         @role
@@ -37,7 +36,7 @@
                 @{
                     var menuItems = new List<MenuVM>();
                     var menu = Session["Menu"].ToString();
-                    menuItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<MenuVM>>(menu);
+                    menuItems = JsonConvert.DeserializeObject<List<MenuVM>>(menu);
                 }
 
                 @foreach (var item in menuItems.GroupBy(s => s.ModuleName))
@@ -45,18 +44,19 @@
                     if (item.FirstOrDefault().IsSingle)
                     {
                         //Do code for single level menu
-                        <li>
+                        <li class="@Html.IsSelected(item.FirstOrDefault().Controller.Trim())">
                             <a href="@Url.Action(item.FirstOrDefault().Action.Trim(), item.FirstOrDefault().Controller.Trim())">
                                 <i class="@item.FirstOrDefault().CssClass.Trim()"></i><span class="list-label">@item.FirstOrDefault().LinkName.Trim() </span>
                             </a>
                         </li>
-
                     }
                     else
                     {
                         //Do code for multi level menu
                         <li>
-                            <a href="#"><i class="@item.FirstOrDefault().CssClass.Trim()"></i> <span>@item.FirstOrDefault().ModuleName</span></a>
+                            <a href="#" class="@Html.IsSelected(item.FirstOrDefault().Controller.Trim())">
+                                <i class="@item.FirstOrDefault().CssClass.Trim()"></i> <span>@item.FirstOrDefault().ModuleName</span>
+                            </a>
                             <ul>
                                 @foreach (var res in item)
                                 {
@@ -72,38 +72,38 @@
                 }
 
                 @*<li><a href="@Url.Action("Index", "Dashboard")"><i class="icon-display4"></i><span class="list-label"> Dashboard</span></a></li>
-                    <li><a href="#"><i class="icon-list-unordered"></i><span class="list-label"> Project dashboard</span></a></li>
+        <li><a href="#"><i class="icon-list-unordered"></i><span class="list-label"> Project dashboard</span></a></li>
 
-                    <li class="list-title">Task & Project</li>
-                    <li>
-                        <a href="#"><i class="icon-briefcase"></i> <span>Project</span></a>
-                        <ul>
-                            <li><a href="#">Create Project</a></li>
-                            <li><a href="#">Running Project</a></li>
-                            <li><a href="#">My Project</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#"><i class="icon-sort-time-asc"></i> <span>Time Tracker</span></a></li>
-                    <li>
-                        <a href="#"><i class="icon-task"></i> <span>Task</span></a>
-                        <ul>
-                            <li><a href="#">Add Task</a></li>
-                            <li><a href="#">View Task</a></li>
-                            <li><a href="#">Running Task</a></li>
-                        </ul>
-                    </li>
+        <li class="list-title">Task & Project</li>
+        <li>
+            <a href="#"><i class="icon-briefcase"></i> <span>Project</span></a>
+            <ul>
+                <li><a href="#">Create Project</a></li>
+                <li><a href="#">Running Project</a></li>
+                <li><a href="#">My Project</a></li>
+            </ul>
+        </li>
+        <li><a href="#"><i class="icon-sort-time-asc"></i> <span>Time Tracker</span></a></li>
+        <li>
+            <a href="#"><i class="icon-task"></i> <span>Task</span></a>
+            <ul>
+                <li><a href="#">Add Task</a></li>
+                <li><a href="#">View Task</a></li>
+                <li><a href="#">Running Task</a></li>
+            </ul>
+        </li>
 
-                    <li class="list-title">Panel</li>
-                    <li><a href="@Url.Action("List", "Users")"><i class=" icon-users2"></i> <span>Employee Reports</span></a></li>
+        <li class="list-title">Panel</li>
+        <li><a href="@Url.Action("List", "Users")"><i class=" icon-users2"></i> <span>Employee Reports</span></a></li>
 
-                    <li>
-                        <a href="#"><i class="icon-cog52"></i> <span>Role Management</span></a>
-                        <ul>
-                            <li><a href="#">View Role</a></li>
-                            <li><a href="#">Update Permission</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#"><i class="icon-envelop5"></i> <span>Emails Templetes</span></a></li>*@
+        <li>
+            <a href="#"><i class="icon-cog52"></i> <span>Role Management</span></a>
+            <ul>
+                <li><a href="#">View Role</a></li>
+                <li><a href="#">Update Permission</a></li>
+            </ul>
+        </li>
+        <li><a href="#"><i class="icon-envelop5"></i> <span>Emails Templetes</span></a></li>*@
 
 
 

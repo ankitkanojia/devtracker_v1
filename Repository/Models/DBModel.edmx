@@ -1,10 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
   <!-- EF Runtime content -->
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self"
+              xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator"
+              xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation"
+              xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Activity">
           <Key>
             <PropertyRef Name="ActivityId" />
@@ -898,10 +902,14 @@
             <End Role="UserRights" EntitySet="UserRights" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="Models" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="Models" Alias="Self" annotation:UseStrongSpatialTypes="false"
+              xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation"
+              xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation"
+              xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="DBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Activities" EntityType="Models.Activity" />
           <EntitySet Name="ChatMasters" EntityType="Models.ChatMaster" />
@@ -1060,7 +1068,8 @@
           </Key>
           <Property Name="ActivityId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Title" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false"
+                    Unicode="true" />
           <Property Name="TaskMasterId" Type="Int64" />
           <Property Name="ProjectId" Type="Int64" />
           <Property Name="IsOnDashboard" Type="Boolean" Nullable="false" />
@@ -1068,7 +1077,8 @@
           <Property Name="IsDelete" Type="Boolean" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CreatedDateInt" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="UserMaster" Relationship="Models.FK_Activity_UserMaster" FromRole="Activity" ToRole="UserMaster" />
+          <NavigationProperty Name="UserMaster" Relationship="Models.FK_Activity_UserMaster" FromRole="Activity"
+                              ToRole="UserMaster" />
         </EntityType>
         <EntityType Name="ChatMaster">
           <Key>
@@ -1081,8 +1091,10 @@
           <Property Name="IsDelete" Type="Boolean" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CreatedDateInt" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="Project" Relationship="Models.FK_ChatMaster_Project" FromRole="ChatMaster" ToRole="Project" />
-          <NavigationProperty Name="UserMaster" Relationship="Models.FK_ChatMaster_UserMaster" FromRole="ChatMaster" ToRole="UserMaster" />
+          <NavigationProperty Name="Project" Relationship="Models.FK_ChatMaster_Project" FromRole="ChatMaster"
+                              ToRole="Project" />
+          <NavigationProperty Name="UserMaster" Relationship="Models.FK_ChatMaster_UserMaster" FromRole="ChatMaster"
+                              ToRole="UserMaster" />
         </EntityType>
         <EntityType Name="CommentMaster">
           <Key>
@@ -1096,9 +1108,12 @@
           <Property Name="IsDelete" Type="Boolean" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CreatedDateInt" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="Project" Relationship="Models.FK_CommentMaster_Project" FromRole="CommentMaster" ToRole="Project" />
-          <NavigationProperty Name="TaskMaster" Relationship="Models.FK_CommentMaster_TaskMaster" FromRole="CommentMaster" ToRole="TaskMaster" />
-          <NavigationProperty Name="UserMaster" Relationship="Models.FK_CommentMaster_UserMaster" FromRole="CommentMaster" ToRole="UserMaster" />
+          <NavigationProperty Name="Project" Relationship="Models.FK_CommentMaster_Project" FromRole="CommentMaster"
+                              ToRole="Project" />
+          <NavigationProperty Name="TaskMaster" Relationship="Models.FK_CommentMaster_TaskMaster"
+                              FromRole="CommentMaster" ToRole="TaskMaster" />
+          <NavigationProperty Name="UserMaster" Relationship="Models.FK_CommentMaster_UserMaster"
+                              FromRole="CommentMaster" ToRole="UserMaster" />
         </EntityType>
         <EntityType Name="DependantTask">
           <Key>
@@ -1115,9 +1130,12 @@
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedDateInt" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="UpdatedBy" Type="Int64" />
-          <NavigationProperty Name="TaskMaster" Relationship="Models.FK_DependantTask_TaskMaster" FromRole="DependantTask" ToRole="TaskMaster" />
-          <NavigationProperty Name="TaskMaster1" Relationship="Models.FK_DependantTask_TaskMaster1" FromRole="DependantTask" ToRole="TaskMaster" />
-          <NavigationProperty Name="UserMaster" Relationship="Models.FK_DependantTask_UserMaster" FromRole="DependantTask" ToRole="UserMaster" />
+          <NavigationProperty Name="TaskMaster" Relationship="Models.FK_DependantTask_TaskMaster"
+                              FromRole="DependantTask" ToRole="TaskMaster" />
+          <NavigationProperty Name="TaskMaster1" Relationship="Models.FK_DependantTask_TaskMaster1"
+                              FromRole="DependantTask" ToRole="TaskMaster" />
+          <NavigationProperty Name="UserMaster" Relationship="Models.FK_DependantTask_UserMaster"
+                              FromRole="DependantTask" ToRole="UserMaster" />
         </EntityType>
         <EntityType Name="EmailTemplete">
           <Key>
@@ -1191,7 +1209,8 @@
           <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="EndDate" Type="DateTime" Precision="3" />
           <Property Name="Budget" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="BasicDescription" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BasicDescription" Type="String" Nullable="false" MaxLength="Max" FixedLength="false"
+                    Unicode="true" />
           <Property Name="ConfidentialDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="EstimateHours" Type="Int32" />
           <Property Name="TeamMemberCount" Type="Int32" />
@@ -1207,14 +1226,22 @@
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedDateInt" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="UpdatedBy" Type="Int64" />
-          <NavigationProperty Name="ChatMasters" Relationship="Models.FK_ChatMaster_Project" FromRole="Project" ToRole="ChatMaster" />
-          <NavigationProperty Name="CommentMasters" Relationship="Models.FK_CommentMaster_Project" FromRole="Project" ToRole="CommentMaster" />
-          <NavigationProperty Name="ProjectStatusMaster" Relationship="Models.FK_Project_ProjectStatusMaster" FromRole="Project" ToRole="ProjectStatusMaster" />
-          <NavigationProperty Name="UserMaster" Relationship="Models.FK_Project_UserMaster" FromRole="Project" ToRole="UserMaster" />
-          <NavigationProperty Name="ProjectAssignies" Relationship="Models.FK_ProjectAssigny_Project" FromRole="Project" ToRole="ProjectAssigny" />
-          <NavigationProperty Name="ProjectAttachments" Relationship="Models.FK_ProjectAttachment_Project" FromRole="Project" ToRole="ProjectAttachment" />
-          <NavigationProperty Name="TaskMasters" Relationship="Models.FK_TaskMaster_Project" FromRole="Project" ToRole="TaskMaster" />
-          <NavigationProperty Name="TimeTrackers" Relationship="Models.FK_TimeTracker_Project" FromRole="Project" ToRole="TimeTracker" />
+          <NavigationProperty Name="ChatMasters" Relationship="Models.FK_ChatMaster_Project" FromRole="Project"
+                              ToRole="ChatMaster" />
+          <NavigationProperty Name="CommentMasters" Relationship="Models.FK_CommentMaster_Project" FromRole="Project"
+                              ToRole="CommentMaster" />
+          <NavigationProperty Name="ProjectStatusMaster" Relationship="Models.FK_Project_ProjectStatusMaster"
+                              FromRole="Project" ToRole="ProjectStatusMaster" />
+          <NavigationProperty Name="UserMaster" Relationship="Models.FK_Project_UserMaster" FromRole="Project"
+                              ToRole="UserMaster" />
+          <NavigationProperty Name="ProjectAssignies" Relationship="Models.FK_ProjectAssigny_Project"
+                              FromRole="Project" ToRole="ProjectAssigny" />
+          <NavigationProperty Name="ProjectAttachments" Relationship="Models.FK_ProjectAttachment_Project"
+                              FromRole="Project" ToRole="ProjectAttachment" />
+          <NavigationProperty Name="TaskMasters" Relationship="Models.FK_TaskMaster_Project" FromRole="Project"
+                              ToRole="TaskMaster" />
+          <NavigationProperty Name="TimeTrackers" Relationship="Models.FK_TimeTracker_Project" FromRole="Project"
+                              ToRole="TimeTracker" />
         </EntityType>
         <EntityType Name="ProjectAssigny">
           <Key>
@@ -1232,18 +1259,24 @@
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedDateInt" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="UpdatedBy" Type="Int64" />
-          <NavigationProperty Name="Project" Relationship="Models.FK_ProjectAssigny_Project" FromRole="ProjectAssigny" ToRole="Project" />
-          <NavigationProperty Name="UserMaster" Relationship="Models.FK_ProjectAssigny_Assigny" FromRole="ProjectAssigny" ToRole="UserMaster" />
-          <NavigationProperty Name="UserMaster1" Relationship="Models.FK_ProjectAssigny_Created" FromRole="ProjectAssigny" ToRole="UserMaster" />
-          <NavigationProperty Name="UserMaster2" Relationship="Models.FK_ProjectAssigny_WhoAssign" FromRole="ProjectAssigny" ToRole="UserMaster" />
+          <NavigationProperty Name="Project" Relationship="Models.FK_ProjectAssigny_Project" FromRole="ProjectAssigny"
+                              ToRole="Project" />
+          <NavigationProperty Name="UserMaster" Relationship="Models.FK_ProjectAssigny_Assigny"
+                              FromRole="ProjectAssigny" ToRole="UserMaster" />
+          <NavigationProperty Name="UserMaster1" Relationship="Models.FK_ProjectAssigny_Created"
+                              FromRole="ProjectAssigny" ToRole="UserMaster" />
+          <NavigationProperty Name="UserMaster2" Relationship="Models.FK_ProjectAssigny_WhoAssign"
+                              FromRole="ProjectAssigny" ToRole="UserMaster" />
         </EntityType>
         <EntityType Name="ProjectAttachment">
           <Key>
             <PropertyRef Name="ProjectAttachmentId" />
           </Key>
-          <Property Name="ProjectAttachmentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectAttachmentId" Type="Int64" Nullable="false"
+                    annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProjectId" Type="Int64" Nullable="false" />
-          <Property Name="DisplayName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DisplayName" Type="String" Nullable="false" MaxLength="500" FixedLength="false"
+                    Unicode="true" />
           <Property Name="FileName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="FileSize" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
@@ -1254,8 +1287,10 @@
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedDateInt" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="UpdatedBy" Type="Int64" />
-          <NavigationProperty Name="Project" Relationship="Models.FK_ProjectAttachment_Project" FromRole="ProjectAttachment" ToRole="Project" />
-          <NavigationProperty Name="UserMaster" Relationship="Models.FK_ProjectAttachment_UserMaster" FromRole="ProjectAttachment" ToRole="UserMaster" />
+          <NavigationProperty Name="Project" Relationship="Models.FK_ProjectAttachment_Project"
+                              FromRole="ProjectAttachment" ToRole="Project" />
+          <NavigationProperty Name="UserMaster" Relationship="Models.FK_ProjectAttachment_UserMaster"
+                              FromRole="ProjectAttachment" ToRole="UserMaster" />
         </EntityType>
         <EntityType Name="ProjectCategory">
           <Key>
@@ -1272,7 +1307,8 @@
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedDateInt" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="UpdatedBy" Type="Int64" />
-          <NavigationProperty Name="UserMaster" Relationship="Models.FK_Category_UserMaster" FromRole="ProjectCategory" ToRole="UserMaster" />
+          <NavigationProperty Name="UserMaster" Relationship="Models.FK_Category_UserMaster" FromRole="ProjectCategory"
+                              ToRole="UserMaster" />
         </EntityType>
         <EntityType Name="ProjectStatusMaster">
           <Key>
@@ -1283,7 +1319,8 @@
           <Property Name="ColorCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="IsDelete" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Projects" Relationship="Models.FK_Project_ProjectStatusMaster" FromRole="ProjectStatusMaster" ToRole="Project" />
+          <NavigationProperty Name="Projects" Relationship="Models.FK_Project_ProjectStatusMaster"
+                              FromRole="ProjectStatusMaster" ToRole="Project" />
         </EntityType>
         <EntityType Name="RoleMaster">
           <Key>
@@ -1291,8 +1328,10 @@
           </Key>
           <Property Name="RoleMasterId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RoleName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="UserMasters" Relationship="Models.FK_UserMaster_RoleMaster" FromRole="RoleMaster" ToRole="UserMaster" />
-          <NavigationProperty Name="UserRights" Relationship="Models.FK_UserRights_RoleMaster" FromRole="RoleMaster" ToRole="UserRight" />
+          <NavigationProperty Name="UserMasters" Relationship="Models.FK_UserMaster_RoleMaster" FromRole="RoleMaster"
+                              ToRole="UserMaster" />
+          <NavigationProperty Name="UserRights" Relationship="Models.FK_UserRights_RoleMaster" FromRole="RoleMaster"
+                              ToRole="UserRight" />
         </EntityType>
         <EntityType Name="TaskAttachment">
           <Key>
@@ -1300,7 +1339,8 @@
           </Key>
           <Property Name="TaskAttachmentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TaskMasterId" Type="Int64" Nullable="false" />
-          <Property Name="DisplayName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DisplayName" Type="String" Nullable="false" MaxLength="500" FixedLength="false"
+                    Unicode="true" />
           <Property Name="FileName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="FileSize" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
@@ -1311,8 +1351,10 @@
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedDateInt" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="UpdatedBy" Type="Int64" />
-          <NavigationProperty Name="TaskMaster" Relationship="Models.FK_TaskAttachment_TaskMaster" FromRole="TaskAttachment" ToRole="TaskMaster" />
-          <NavigationProperty Name="UserMaster" Relationship="Models.FK_TaskAttachment_UserMaster" FromRole="TaskAttachment" ToRole="UserMaster" />
+          <NavigationProperty Name="TaskMaster" Relationship="Models.FK_TaskAttachment_TaskMaster"
+                              FromRole="TaskAttachment" ToRole="TaskMaster" />
+          <NavigationProperty Name="UserMaster" Relationship="Models.FK_TaskAttachment_UserMaster"
+                              FromRole="TaskAttachment" ToRole="UserMaster" />
         </EntityType>
         <EntityType Name="TaskCategory">
           <Key>
@@ -1329,8 +1371,10 @@
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedDateInt" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="UpdatedBy" Type="Int64" />
-          <NavigationProperty Name="UserMaster" Relationship="Models.FK_TaskCategory_UserMaster" FromRole="TaskCategory" ToRole="UserMaster" />
-          <NavigationProperty Name="TaskMasters" Relationship="Models.FK_TaskMaster_TaskCategory" FromRole="TaskCategory" ToRole="TaskMaster" />
+          <NavigationProperty Name="UserMaster" Relationship="Models.FK_TaskCategory_UserMaster"
+                              FromRole="TaskCategory" ToRole="UserMaster" />
+          <NavigationProperty Name="TaskMasters" Relationship="Models.FK_TaskMaster_TaskCategory"
+                              FromRole="TaskCategory" ToRole="TaskMaster" />
         </EntityType>
         <EntityType Name="TaskMaster">
           <Key>
@@ -1342,7 +1386,8 @@
           <Property Name="ProjectId" Type="Int64" Nullable="false" />
           <Property Name="Title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="TaskTypeMasterId" Type="Int64" Nullable="false" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false"
+                    Unicode="true" />
           <Property Name="AssignyId" Type="Int64" Nullable="false" />
           <Property Name="ReporterId" Type="Int64" Nullable="false" />
           <Property Name="PriorityMasterId" Type="Int64" Nullable="false" />
@@ -1360,16 +1405,26 @@
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedDateInt" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="UpdatedBy" Type="Int64" />
-          <NavigationProperty Name="CommentMasters" Relationship="Models.FK_CommentMaster_TaskMaster" FromRole="TaskMaster" ToRole="CommentMaster" />
-          <NavigationProperty Name="DependantTasks" Relationship="Models.FK_DependantTask_TaskMaster" FromRole="TaskMaster" ToRole="DependantTask" />
-          <NavigationProperty Name="DependantTasks1" Relationship="Models.FK_DependantTask_TaskMaster1" FromRole="TaskMaster" ToRole="DependantTask" />
-          <NavigationProperty Name="Project" Relationship="Models.FK_TaskMaster_Project" FromRole="TaskMaster" ToRole="Project" />
-          <NavigationProperty Name="TaskAttachments" Relationship="Models.FK_TaskAttachment_TaskMaster" FromRole="TaskMaster" ToRole="TaskAttachment" />
-          <NavigationProperty Name="TaskCategory" Relationship="Models.FK_TaskMaster_TaskCategory" FromRole="TaskMaster" ToRole="TaskCategory" />
-          <NavigationProperty Name="TaskStatusMaster" Relationship="Models.FK_TaskMaster_TaskStatusMaster" FromRole="TaskMaster" ToRole="TaskStatusMaster" />
-          <NavigationProperty Name="UserMaster" Relationship="Models.FK_TaskMaster_UserMaster" FromRole="TaskMaster" ToRole="UserMaster" />
-          <NavigationProperty Name="UserMaster1" Relationship="Models.FK_TaskMaster_UserMaster1" FromRole="TaskMaster" ToRole="UserMaster" />
-          <NavigationProperty Name="TimeTrackers" Relationship="Models.FK_TimeTracker_TaskMaster" FromRole="TaskMaster" ToRole="TimeTracker" />
+          <NavigationProperty Name="CommentMasters" Relationship="Models.FK_CommentMaster_TaskMaster"
+                              FromRole="TaskMaster" ToRole="CommentMaster" />
+          <NavigationProperty Name="DependantTasks" Relationship="Models.FK_DependantTask_TaskMaster"
+                              FromRole="TaskMaster" ToRole="DependantTask" />
+          <NavigationProperty Name="DependantTasks1" Relationship="Models.FK_DependantTask_TaskMaster1"
+                              FromRole="TaskMaster" ToRole="DependantTask" />
+          <NavigationProperty Name="Project" Relationship="Models.FK_TaskMaster_Project" FromRole="TaskMaster"
+                              ToRole="Project" />
+          <NavigationProperty Name="TaskAttachments" Relationship="Models.FK_TaskAttachment_TaskMaster"
+                              FromRole="TaskMaster" ToRole="TaskAttachment" />
+          <NavigationProperty Name="TaskCategory" Relationship="Models.FK_TaskMaster_TaskCategory"
+                              FromRole="TaskMaster" ToRole="TaskCategory" />
+          <NavigationProperty Name="TaskStatusMaster" Relationship="Models.FK_TaskMaster_TaskStatusMaster"
+                              FromRole="TaskMaster" ToRole="TaskStatusMaster" />
+          <NavigationProperty Name="UserMaster" Relationship="Models.FK_TaskMaster_UserMaster" FromRole="TaskMaster"
+                              ToRole="UserMaster" />
+          <NavigationProperty Name="UserMaster1" Relationship="Models.FK_TaskMaster_UserMaster1" FromRole="TaskMaster"
+                              ToRole="UserMaster" />
+          <NavigationProperty Name="TimeTrackers" Relationship="Models.FK_TimeTracker_TaskMaster" FromRole="TaskMaster"
+                              ToRole="TimeTracker" />
         </EntityType>
         <EntityType Name="TaskStatusMaster">
           <Key>
@@ -1380,7 +1435,8 @@
           <Property Name="ColorCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="IsDelete" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="TaskMasters" Relationship="Models.FK_TaskMaster_TaskStatusMaster" FromRole="TaskStatusMaster" ToRole="TaskMaster" />
+          <NavigationProperty Name="TaskMasters" Relationship="Models.FK_TaskMaster_TaskStatusMaster"
+                              FromRole="TaskStatusMaster" ToRole="TaskMaster" />
         </EntityType>
         <EntityType Name="TaskTypeMaster">
           <Key>
@@ -1399,7 +1455,8 @@
           <Property Name="UserMasterId" Type="Int64" Nullable="false" />
           <Property Name="TaskMasterId" Type="Int64" Nullable="false" />
           <Property Name="ProjectId" Type="Int64" Nullable="false" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false"
+                    Unicode="true" />
           <Property Name="Hours" Type="Decimal" Nullable="false" Precision="6" Scale="2" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="IsDelete" Type="Boolean" Nullable="false" />
@@ -1409,9 +1466,12 @@
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedDateInt" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="UpdatedBy" Type="Int64" />
-          <NavigationProperty Name="Project" Relationship="Models.FK_TimeTracker_Project" FromRole="TimeTracker" ToRole="Project" />
-          <NavigationProperty Name="TaskMaster" Relationship="Models.FK_TimeTracker_TaskMaster" FromRole="TimeTracker" ToRole="TaskMaster" />
-          <NavigationProperty Name="UserMaster" Relationship="Models.FK_TimeTracker_UserMaster" FromRole="TimeTracker" ToRole="UserMaster" />
+          <NavigationProperty Name="Project" Relationship="Models.FK_TimeTracker_Project" FromRole="TimeTracker"
+                              ToRole="Project" />
+          <NavigationProperty Name="TaskMaster" Relationship="Models.FK_TimeTracker_TaskMaster" FromRole="TimeTracker"
+                              ToRole="TaskMaster" />
+          <NavigationProperty Name="UserMaster" Relationship="Models.FK_TimeTracker_UserMaster" FromRole="TimeTracker"
+                              ToRole="UserMaster" />
         </EntityType>
         <EntityType Name="UserMaster">
           <Key>
@@ -1445,22 +1505,38 @@
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedDateInt" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="UpdatedBy" Type="Int64" />
-          <NavigationProperty Name="Activities" Relationship="Models.FK_Activity_UserMaster" FromRole="UserMaster" ToRole="Activity" />
-          <NavigationProperty Name="ChatMasters" Relationship="Models.FK_ChatMaster_UserMaster" FromRole="UserMaster" ToRole="ChatMaster" />
-          <NavigationProperty Name="CommentMasters" Relationship="Models.FK_CommentMaster_UserMaster" FromRole="UserMaster" ToRole="CommentMaster" />
-          <NavigationProperty Name="DependantTasks" Relationship="Models.FK_DependantTask_UserMaster" FromRole="UserMaster" ToRole="DependantTask" />
-          <NavigationProperty Name="Projects" Relationship="Models.FK_Project_UserMaster" FromRole="UserMaster" ToRole="Project" />
-          <NavigationProperty Name="ProjectAssignies" Relationship="Models.FK_ProjectAssigny_Assigny" FromRole="UserMaster" ToRole="ProjectAssigny" />
-          <NavigationProperty Name="ProjectAssignies1" Relationship="Models.FK_ProjectAssigny_Created" FromRole="UserMaster" ToRole="ProjectAssigny" />
-          <NavigationProperty Name="ProjectAssignies2" Relationship="Models.FK_ProjectAssigny_WhoAssign" FromRole="UserMaster" ToRole="ProjectAssigny" />
-          <NavigationProperty Name="ProjectAttachments" Relationship="Models.FK_ProjectAttachment_UserMaster" FromRole="UserMaster" ToRole="ProjectAttachment" />
-          <NavigationProperty Name="ProjectCategories" Relationship="Models.FK_Category_UserMaster" FromRole="UserMaster" ToRole="ProjectCategory" />
-          <NavigationProperty Name="RoleMaster" Relationship="Models.FK_UserMaster_RoleMaster" FromRole="UserMaster" ToRole="RoleMaster" />
-          <NavigationProperty Name="TaskAttachments" Relationship="Models.FK_TaskAttachment_UserMaster" FromRole="UserMaster" ToRole="TaskAttachment" />
-          <NavigationProperty Name="TaskCategories" Relationship="Models.FK_TaskCategory_UserMaster" FromRole="UserMaster" ToRole="TaskCategory" />
-          <NavigationProperty Name="TaskMasters" Relationship="Models.FK_TaskMaster_UserMaster" FromRole="UserMaster" ToRole="TaskMaster" />
-          <NavigationProperty Name="TaskMasters1" Relationship="Models.FK_TaskMaster_UserMaster1" FromRole="UserMaster" ToRole="TaskMaster" />
-          <NavigationProperty Name="TimeTrackers" Relationship="Models.FK_TimeTracker_UserMaster" FromRole="UserMaster" ToRole="TimeTracker" />
+          <NavigationProperty Name="Activities" Relationship="Models.FK_Activity_UserMaster" FromRole="UserMaster"
+                              ToRole="Activity" />
+          <NavigationProperty Name="ChatMasters" Relationship="Models.FK_ChatMaster_UserMaster" FromRole="UserMaster"
+                              ToRole="ChatMaster" />
+          <NavigationProperty Name="CommentMasters" Relationship="Models.FK_CommentMaster_UserMaster"
+                              FromRole="UserMaster" ToRole="CommentMaster" />
+          <NavigationProperty Name="DependantTasks" Relationship="Models.FK_DependantTask_UserMaster"
+                              FromRole="UserMaster" ToRole="DependantTask" />
+          <NavigationProperty Name="Projects" Relationship="Models.FK_Project_UserMaster" FromRole="UserMaster"
+                              ToRole="Project" />
+          <NavigationProperty Name="ProjectAssignies" Relationship="Models.FK_ProjectAssigny_Assigny"
+                              FromRole="UserMaster" ToRole="ProjectAssigny" />
+          <NavigationProperty Name="ProjectAssignies1" Relationship="Models.FK_ProjectAssigny_Created"
+                              FromRole="UserMaster" ToRole="ProjectAssigny" />
+          <NavigationProperty Name="ProjectAssignies2" Relationship="Models.FK_ProjectAssigny_WhoAssign"
+                              FromRole="UserMaster" ToRole="ProjectAssigny" />
+          <NavigationProperty Name="ProjectAttachments" Relationship="Models.FK_ProjectAttachment_UserMaster"
+                              FromRole="UserMaster" ToRole="ProjectAttachment" />
+          <NavigationProperty Name="ProjectCategories" Relationship="Models.FK_Category_UserMaster"
+                              FromRole="UserMaster" ToRole="ProjectCategory" />
+          <NavigationProperty Name="RoleMaster" Relationship="Models.FK_UserMaster_RoleMaster" FromRole="UserMaster"
+                              ToRole="RoleMaster" />
+          <NavigationProperty Name="TaskAttachments" Relationship="Models.FK_TaskAttachment_UserMaster"
+                              FromRole="UserMaster" ToRole="TaskAttachment" />
+          <NavigationProperty Name="TaskCategories" Relationship="Models.FK_TaskCategory_UserMaster"
+                              FromRole="UserMaster" ToRole="TaskCategory" />
+          <NavigationProperty Name="TaskMasters" Relationship="Models.FK_TaskMaster_UserMaster" FromRole="UserMaster"
+                              ToRole="TaskMaster" />
+          <NavigationProperty Name="TaskMasters1" Relationship="Models.FK_TaskMaster_UserMaster1" FromRole="UserMaster"
+                              ToRole="TaskMaster" />
+          <NavigationProperty Name="TimeTrackers" Relationship="Models.FK_TimeTracker_UserMaster" FromRole="UserMaster"
+                              ToRole="TimeTracker" />
         </EntityType>
         <EntityType Name="UserRight">
           <Key>
@@ -1473,7 +1549,8 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CreatedDateInt" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="RoleMaster" Relationship="Models.FK_UserRights_RoleMaster" FromRole="UserRight" ToRole="RoleMaster" />
+          <NavigationProperty Name="RoleMaster" Relationship="Models.FK_UserRights_RoleMaster" FromRole="UserRight"
+                              ToRole="RoleMaster" />
         </EntityType>
         <Association Name="FK_Activity_UserMaster">
           <End Type="Models.UserMaster" Role="UserMaster" Multiplicity="1" />
@@ -1859,7 +1936,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        </Schema>
+      </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>

@@ -12,17 +12,21 @@
             <i class="icon-user-block position-left"></i>Access permission
         </div>
         <ul class="breadcrumb">
-            <li><a href="@Url.Action("Index", "Dashboard")"></a></li>
-            <li><a href="@Url.Action("Index", "Dashboard")">Dashboard</a></li>
+            <li>
+                <a href="@Url.Action("Index", "Dashboard")"></a>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "Dashboard")">Dashboard</a>
+            </li>
             <li class="active">Access permission</li>
         </ul>
     </div>
 </div>
 <!--/Page Header-->
 
-@using (Html.BeginForm("Configuration", "Role", FormMethod.Post, new { id = "frmRoleConfiguration", enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Configuration", "Role", FormMethod.Post, new {id = "frmRoleConfiguration", enctype = "multipart/form-data"}))
 {
-    @Html.Hidden("hdnUserRoleID", null, new { @id = "hdnUserRoleID", @Value = ViewBag.RoleID })
+    @Html.Hidden("hdnUserRoleID", null, new {id = "hdnUserRoleID", Value = ViewBag.RoleID})
 
     <div class="container-fluid page-content">
         <div class="row">
@@ -42,26 +46,26 @@
                                 <div class="panel-body">
                                     <table class="table table-striped">
                                         <thead>
-                                            <tr>
-                                                <th width="15%">Permission</th>
-                                                <th>Link Name </th>
-                                            </tr>
+                                        <tr>
+                                            <th width="15%">Permission</th>
+                                            <th>Link Name </th>
+                                        </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var res in item)
-                                            {
-                                                <tr>
-                                                    <td>
-                                                        <div class="checkbox">
-                                                            <label>
-                                                                <input type="checkbox" class="control-primary" name="IsAccess_@res.LinkID" checked="@res.IsAccess" value="true">
-                                                            </label>
-                                                        </div>
-                                                        @*<input type="checkbox" class="i-checks" name="IsAccess_@res.LinkID" checked="@res.IsAccess" value="true">*@
-                                                    </td>
-                                                    <td>@res.LinkName</td>
-                                                </tr>
-                                            }
+                                        @foreach (var res in item)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" class="control-primary" name="IsAccess_@res.LinkID" checked="@res.IsAccess" value="true">
+                                                        </label>
+                                                    </div>
+                                                    @*<input type="checkbox" class="i-checks" name="IsAccess_@res.LinkID" checked="@res.IsAccess" value="true">*@
+                                                </td>
+                                                <td>@res.LinkName</td>
+                                            </tr>
+                                        }
                                         </tbody>
                                     </table>
 
@@ -84,7 +88,7 @@
                 </div>
             </div>
         </div>
-        <br /><br />
+        <br/><br/>
     </div>
 }
 
@@ -93,9 +97,9 @@
 
 @section Scripts {
     <script type="text/javascript">
-        $(document).ready(function () {
+        $(document).ready(function() {
 
-            $("#BtnCancel").click(function () {
+            $("#BtnCancel").click(function() {
                 location.reload();
                 document.getElementById("frmRoleConfig").reset();
             });

@@ -29,6 +29,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -148,6 +149,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebHelpers\CheckAuthorization.cs" />
+    <Compile Include="WebHelpers\HtmlHelperExtensions.cs" />
     <Compile Include="WebHelpers\RoleManagement.cs" />
     <Compile Include="WebHelpers\SelectListFunction.cs" />
   </ItemGroup>
@@ -992,7 +994,12 @@
     <Content Include="FileManagement\Profile\6eb85477-8d2c-4cb7-bd0c-b570094e7a4eSystem.Web.HttpPostedFileWrapper.jpg" />
     <Content Include="FileManagement\Profile\818cf385-c53c-46cb-8e9a-c19addb966eaSystem.Web.HttpPostedFileWrapper.jpg" />
     <Content Include="FileManagement\Profile\ankit.jpg" />
+    <Content Include="FileManagement\Profile\ash ketchum.png" />
     <Content Include="FileManagement\Profile\DP.jpg" />
+    <Content Include="FileManagement\Profile\ff4ff0c6-6a21-4ba0-b8bf-6a6d65b38d4aSystem.Web.HttpPostedFileWrapper.jpg" />
+    <Content Include="FileManagement\Profile\goku.png" />
+    <Content Include="FileManagement\Profile\hiro hamada.jpg" />
+    <Content Include="FileManagement\Profile\richie rich.png" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />

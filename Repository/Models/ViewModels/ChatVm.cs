@@ -25,6 +25,5 @@ namespace Repository.Models.ViewModels
         public long ProjectId { get; set; }
         public long TaskMasterId { get; set; }
         public DateTime ChatDate { get; set; }
-
     }
 }

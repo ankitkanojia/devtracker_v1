@@ -1,5 +1,4 @@
-﻿using Repository.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using DevTracker.WebHelpers;
 using Repository.Helpers;
+using Repository.Models;
 using Repository.Models.ViewModels;
 
 namespace DevTracker.Controllers
@@ -14,140 +14,112 @@ namespace DevTracker.Controllers
     [CheckAuthorization]
     public class UsersController : Controller
     {
-
         private readonly DBEntities _entities = new DBEntities();
 
         public async Task<ActionResult> List()
         {
-            try
+            using (_entities)
             {
-                using (_entities)
-                {
-                    if (TempData["Success"] != null)
-                        TempData["Success"] = TempData["Success"];
+                if (TempData["Success"] != null)
+                    TempData["Success"] = TempData["Success"];
 
-                    var userMasters = await _entities.UserMasters.Where(s => !s.IsDelete).ToListAsync();
+                var userMasters = await _entities.UserMasters.Where(s => !s.IsDelete).ToListAsync();
 
-                    return View(userMasters);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
+                return View(userMasters);
             }
         }
 
         [HttpPost]
         public async Task<JsonResult> Delete(long id)
         {
-            try
+            using (_entities)
             {
-                using (_entities)
+                var userMaster = await _entities.UserMasters.FindAsync(id);
+
+                if (userMaster != null)
                 {
-                    var userMaster = await _entities.UserMasters.FindAsync(id);
+                    userMaster.IsDelete = true;
+                    _entities.Entry(userMaster).State = EntityState.Modified;
+                    await _entities.SaveChangesAsync();
 
-                    if (userMaster != null)
-                    {
-                        userMaster.IsDelete = true;
-                        _entities.Entry(userMaster).State = EntityState.Modified;
-                        await _entities.SaveChangesAsync();
-
-                        return Json(new { status = true, message = "User deleted successfully." }, JsonRequestBehavior.AllowGet);
-                    }
-
-                    return Json(new { status = false, message = "Request failed! Please try after some time." }, JsonRequestBehavior.AllowGet);
+                    return Json(new {status = true, message = "User deleted successfully."},
+                        JsonRequestBehavior.AllowGet);
                 }
 
-            }
-            catch (Exception)
-            {
-                throw;
+                return Json(new {status = false, message = "Request failed! Please try after some time."},
+                    JsonRequestBehavior.AllowGet);
             }
         }
 
         public async Task<ActionResult> MyProfile()
         {
-            try
+            using (_entities)
             {
-                using (_entities)
-                {
-                    if (TempData["Success"] != null)
-                        TempData["Success"] = TempData["Success"];
+                if (TempData["Success"] != null)
+                    TempData["Success"] = TempData["Success"];
 
-                    var usersVm = new UsersVm();
-                    var userMasterId = Convert.ToInt64(CookieHelper.GetCookie(CookieName.UserMasterId));
-                    var userMaster = await _entities.UserMasters.FindAsync(userMasterId);
-                    if (userMaster != null)
-                    {
-                        usersVm.CopyProperties(userMaster);
-                        return View(usersVm);
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Dashboard");
-                    }
+                var usersVm = new UsersVm();
+                var userMasterId = Convert.ToInt64(CookieHelper.GetCookie(CookieName.UserMasterId));
+                var userMaster = await _entities.UserMasters.FindAsync(userMasterId);
+                if (userMaster != null)
+                {
+                    usersVm.CopyProperties(userMaster);
+                    return View(usersVm);
                 }
-            }
-            catch (Exception)
-            {
-                throw;
+
+                return RedirectToAction("Index", "Dashboard");
             }
         }
 
         [HttpPost]
         public async Task<ActionResult> MyProfile(UsersVm data)
         {
-            try
+            using (_entities)
             {
-                using (_entities)
+                //Confirm that model is valid
+                if (!ModelState.IsValid)
+                    return View(data);
+
+                var userMaster = await _entities.UserMasters.FindAsync(data.UserMasterId);
+
+                if (userMaster != null)
                 {
-                    //Confirm that model is valid
-                    if (!ModelState.IsValid)
-                        return View(data);
-
-                    var userMaster = await _entities.UserMasters.FindAsync(data.UserMasterId);
-
-                    if (userMaster != null)
+                    //If we find image then save it
+                    if (data.ProfileImage != null)
                     {
-                        //If we find image then save it
-                        if (data.ProfileImage != null)
-                        {
-                            userMaster.Profile = Utilities.SaveFile(data.ProfileImage, Server.MapPath("~" + BasicProperty.ProfilePath), Guid.NewGuid().ToString() + data.ProfileImage);
-                            CookieHelper.SetCookie(CookieName.ProfileImage, BasicProperty.ProfilePath + userMaster.Profile, 36);
-                        }
-
-                        var roleMasterId = Convert.ToInt64(CookieHelper.GetCookie(CookieName.RoleMasterId));
-                        var isOwnerPm = roleMasterId == (int)EnumList.Roles.Owner || roleMasterId == (int)EnumList.Roles.Project_Manager;
-
-                        //If we found owner / pm then we allow below info for update
-                        if (isOwnerPm)
-                        {
-                            userMaster.Name = data.Name;
-                            userMaster.Mobile = data.Mobile;
-                            userMaster.CompanyName = data.CompanyName;
-                            userMaster.SkypeId = data.SkypeId;
-                        }
-
-                        userMaster.BioStatus = data.BioStatus;
-                        userMaster.FacebookLink = data.FacebookLink;
-                        userMaster.TwitterLink = data.TwitterLink;
-                        userMaster.LinkedInLink = data.LinkedInLink;
-                        _entities.Entry(userMaster).State = EntityState.Modified;
-                        await _entities.SaveChangesAsync();
-
-                        TempData["Success"] = "Profile updated successfully.";
-
-                        return RedirectToAction("MyProfile");
+                        userMaster.Profile = Utilities.SaveFile(data.ProfileImage,
+                            Server.MapPath("~" + BasicProperty.ProfilePath),
+                            Guid.NewGuid().ToString() + data.ProfileImage);
+                        CookieHelper.SetCookie(CookieName.ProfileImage, BasicProperty.ProfilePath + userMaster.Profile,
+                            36);
                     }
-                    else
+
+                    var roleMasterId = Convert.ToInt64(CookieHelper.GetCookie(CookieName.RoleMasterId));
+                    var isOwnerPm = roleMasterId == (int) EnumList.Roles.Owner ||
+                                    roleMasterId == (int) EnumList.Roles.Project_Manager;
+
+                    //If we found owner / pm then we allow below info for update
+                    if (isOwnerPm)
                     {
-                        TempData["Error"] = "Request failed! Please try after some time.";
+                        userMaster.Name = data.Name;
+                        userMaster.Mobile = data.Mobile;
+                        userMaster.CompanyName = data.CompanyName;
+                        userMaster.SkypeId = data.SkypeId;
                     }
+
+                    userMaster.BioStatus = data.BioStatus;
+                    userMaster.FacebookLink = data.FacebookLink;
+                    userMaster.TwitterLink = data.TwitterLink;
+                    userMaster.LinkedInLink = data.LinkedInLink;
+                    _entities.Entry(userMaster).State = EntityState.Modified;
+                    await _entities.SaveChangesAsync();
+
+                    TempData["Success"] = "Profile updated successfully.";
+
+                    return RedirectToAction("MyProfile");
                 }
-            }
-            catch (Exception)
-            {
-                throw;
+
+                TempData["Error"] = "Request failed! Please try after some time.";
             }
 
             return View(data);
@@ -155,95 +127,82 @@ namespace DevTracker.Controllers
 
         public async Task<ActionResult> Create(long id = 0)
         {
-            try
+            using (_entities)
             {
-                using (_entities)
-                {
-                    var userMaster = await _entities.UserMasters.FindAsync(id) ?? new UserMaster();
-                    return View(userMaster);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
+                var userMaster = await _entities.UserMasters.FindAsync(id) ?? new UserMaster();
+                return View(userMaster);
             }
         }
 
         [HttpPost]
         public async Task<ActionResult> Create(UserMaster data)
         {
-            try
+            using (_entities)
             {
-                using (_entities)
+                if (data.UserMasterId > 0)
                 {
+                    var userMaster = await _entities.UserMasters.FindAsync(data.UserMasterId);
 
-                    if (data.UserMasterId > 0)
+                    if (userMaster != null)
                     {
-                        var userMaster = await _entities.UserMasters.FindAsync(data.UserMasterId);
+                        //Update code HERE
+                        userMaster.Name = data.Name;
+                        userMaster.Email = data.Email;
+                        userMaster.RoleMasterId = data.RoleMasterId;
+                        userMaster.Mobile = data.Mobile;
+                        userMaster.CompanyName = data.CompanyName;
+                        userMaster.SkypeId = data.SkypeId;
+                        userMaster.CreatedBy = Convert.ToInt64(CookieHelper.GetCookie(CookieName.UserMasterId));
+                        userMaster.IsActive = true;
+                        userMaster.IsDelete = false;
+                        userMaster.CreatedDate = DateTime.Now;
+                        _entities.Entry(userMaster).State = EntityState.Modified;
+                        await _entities.SaveChangesAsync();
 
-                        if (userMaster != null)
-                        {
-                            //Update code HERE
-                            userMaster.Name = data.Name;
-                            userMaster.Email = data.Email;
-                            userMaster.RoleMasterId = data.RoleMasterId;
-                            userMaster.Mobile = data.Mobile;
-                            userMaster.CompanyName = data.CompanyName;
-                            userMaster.SkypeId = data.SkypeId;
-                            userMaster.CreatedBy = Convert.ToInt64(CookieHelper.GetCookie(CookieName.UserMasterId));
-                            userMaster.IsActive = true;
-                            userMaster.IsDelete = false;
-                            userMaster.CreatedDate = DateTime.Now;
-                            _entities.Entry(userMaster).State = EntityState.Modified;
-                            await _entities.SaveChangesAsync();
-
-                            TempData["Success"] = "User details updated successfully";
-                        }
-                        else
-                        {
-                            return RedirectToAction("Create");
-                        }
+                        TempData["Success"] = "User details updated successfully";
                     }
                     else
                     {
-                        //Add code HERE
-                        var randomStringGenerator = new Utilities.RandomStringGenerator();
-                        var password = randomStringGenerator.GetRandomString(6, Utilities.RandomStringGenerator.AlphanumericCaps.ToCharArray());
-
-                        //Create HASH & SALT
-                        var salt = Utilities.GenerateSalt(32);
-                        var hash = Utilities.GenerateHash(password, data.Email.Trim(), salt);
-
-                        data.CreatedBy = Convert.ToInt64(CookieHelper.GetCookie(CookieName.UserMasterId));
-                        data.IsActive = true;
-                        data.IsDelete = false;
-                        data.Salt = salt;
-                        data.Hash = hash;
-                        data.CreatedDate = DateTime.Now;
-                        _entities.UserMasters.Add(data);
-                        await _entities.SaveChangesAsync();
-
-                        //Todo: Send Password Code HERE
-                        //Send mail HERE
-                        var replacement = new Dictionary<string, string>
-                        {
-                            {"#name#", data.Name},
-                            {"#password#", password}
-                        };
-
-                        //Sent email from HERE
-                        var isEailSent = SendEmail.Templete(replacement, data.Email, (int)EnumList.EmailTemplete.Welcome);
-
-
-                        TempData["Success"] = "User details added successfully";
+                        return RedirectToAction("Create");
                     }
-
-                    return RedirectToAction("List");
                 }
-            }
-            catch (Exception)
-            {
-                throw;
+                else
+                {
+                    //Add code HERE
+                    var randomStringGenerator = new Utilities.RandomStringGenerator();
+                    //var password = randomStringGenerator.GetRandomString(6,
+                    //    Utilities.RandomStringGenerator.AlphanumericCaps.ToCharArray());
+                    var password = "Suchit@16";
+
+                    //Create HASH & SALT
+                    var salt = Utilities.GenerateSalt(32);
+                    var hash = Utilities.GenerateHash(password, data.Email.Trim(), salt);
+
+                    data.CreatedBy = Convert.ToInt64(CookieHelper.GetCookie(CookieName.UserMasterId));
+                    data.IsActive = true;
+                    data.IsDelete = false;
+                    data.Salt = salt;
+                    data.Hash = hash;
+                    data.CreatedDate = DateTime.Now;
+                    _entities.UserMasters.Add(data);
+                    await _entities.SaveChangesAsync();
+
+                    //Todo: Send Password Code HERE
+                    //Send mail HERE
+                    var replacement = new Dictionary<string, string>
+                    {
+                        {"#name#", data.Name},
+                        {"#password#", password}
+                    };
+
+                    //Sent email from HERE
+                    var isEailSent = SendEmail.Templete(replacement, data.Email, (int) EnumList.EmailTemplete.Welcome);
+
+
+                    TempData["Success"] = "User details added successfully";
+                }
+
+                return RedirectToAction("List");
             }
         }
 
@@ -255,57 +214,50 @@ namespace DevTracker.Controllers
         [HttpPost]
         public async Task<ActionResult> ChangePassword(ChangePasswordVm data)
         {
-            try
+            using (_entities)
             {
-                using (_entities)
+                //Confirm that model is valid
+                if (!ModelState.IsValid)
+                    return View(data);
+
+
+                var userMasterId = Convert.ToInt64(CookieHelper.GetCookie(CookieName.UserMasterId));
+
+                var userMaster = await _entities.UserMasters.FindAsync(userMasterId);
+
+                if (userMaster != null)
                 {
-                    //Confirm that model is valid
-                    if (!ModelState.IsValid)
-                        return View(data);
+                    var oldHashValue = userMaster.Hash;
+                    var salt = userMaster.Salt;
 
+                    var isValidOldPwd =
+                        Utilities.CompareHashValue(data.OldPassword.Trim(), userMaster.Email, oldHashValue, salt);
 
-                    var userMasterId = Convert.ToInt64(CookieHelper.GetCookie(CookieName.UserMasterId));
-
-                    var userMaster = await _entities.UserMasters.FindAsync(userMasterId);
-
-                    if (userMaster != null)
+                    if (isValidOldPwd)
                     {
-                        var oldHashValue = userMaster.Hash;
-                        var salt = userMaster.Salt;
+                        //Create HASH & SALT
+                        var newSalt = Utilities.GenerateSalt(32);
+                        var hash = Utilities.GenerateHash(data.NewPassword.Trim(), userMaster.Email.Trim(), newSalt);
 
-                        var isValidOldPwd = Utilities.CompareHashValue(data.OldPassword.Trim(), userMaster.Email, oldHashValue, salt);
+                        userMaster.Salt = newSalt;
+                        userMaster.Hash = hash;
+                        _entities.Entry(userMaster).State = EntityState.Modified;
+                        await _entities.SaveChangesAsync();
 
-                        if (isValidOldPwd)
-                        {
-                            //Create HASH & SALT
-                            var newSalt = Utilities.GenerateSalt(32);
-                            var hash = Utilities.GenerateHash(data.NewPassword.Trim(), userMaster.Email.Trim(), newSalt);
-
-                            userMaster.Salt = newSalt;
-                            userMaster.Hash = hash;
-                            _entities.Entry(userMaster).State = EntityState.Modified;
-                            await _entities.SaveChangesAsync();
-
-                            TempData["Success"] = "Password changed successfully.";
-                        }
-                        else
-                        {
-                            TempData["Error"] = "You entered wrong old password.";
-                        }
+                        TempData["Success"] = "Password changed successfully.";
                     }
                     else
                     {
-                        TempData["Error"] = "Request failed! Please try after some time.";
+                        TempData["Error"] = "You entered wrong old password.";
                     }
-
-                    return View(new ChangePasswordVm());
                 }
-            }
-            catch (Exception)
-            {
-                throw;
+                else
+                {
+                    TempData["Error"] = "Request failed! Please try after some time.";
+                }
+
+                return View(new ChangePasswordVm());
             }
         }
-
     }
 }

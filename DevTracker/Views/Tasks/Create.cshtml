@@ -1,5 +1,4 @@
-﻿
-@model TaskVm
+﻿@model TaskVm
 
 @{
     ViewBag.Title = "Create Task";
@@ -13,16 +12,19 @@
             <i class="icon-file-text position-left"></i> Task
         </div>
         <ul class="breadcrumb">
-            <li><a href="@Url.Action("Index", "Dashboard")"></a></li>
-            <li><a href="@Url.Action("Index", "Dashboard")">Dashboard</a></li>
+            <li>
+                <a href="@Url.Action("Index", "Dashboard")"></a>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "Dashboard")">Dashboard</a>
+            </li>
             <li class="active">Create Task</li>
         </ul>
     </div>
 </div>
 <!-- /Page header -->
-@using (Html.BeginForm("Create", "Tasks", FormMethod.Post, new { @class = "form-horizontal", @id = "frmTask", @enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Create", "Tasks", FormMethod.Post, new {@class = "form-horizontal", id = "frmTask", enctype = "multipart/form-data"}))
 {
-
     <div class="container-fluid page-content">
         <div class="row">
             <div class="col-md-12 col-sm-12">
@@ -39,7 +41,7 @@
                                 <div class="form-group">
                                     <label class="control-label">Select Project : <span class="text-warning">*</span></label>
                                     <div class="">
-                                        @Html.DropDownListFor(s => s.ProjectId, SelectListFunction.GetProjects(Model.ProjectId), new { @class = "select" })
+                                        @Html.DropDownListFor(s => s.ProjectId, SelectListFunction.GetProjects(Model.ProjectId), new {@class = "select"})
                                     </div>
                                 </div>
                             </div>
@@ -48,18 +50,18 @@
                                 <div class="form-group">
                                     <label class="control-label">Task Title : <span class="text-warning">*</span></label>
                                     <div class="">
-                                        @Html.TextBoxFor(s => s.Title, new { @class = "form-control", @placeholder = "Create a logo design" })
+                                        @Html.TextBoxFor(s => s.Title, new {@class = "form-control", placeholder = "Create a logo design"})
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <br />
+                        <br/>
                         <div class="row">
                             <div class="col-md-6">
                                 <label class="control-label">Select Task Type : <span class="text-warning">*</span></label>
                                 <div class="">
-                                    @Html.DropDownListFor(s => s.TaskTypeMasterId, SelectListFunction.GetTaskType(Model.TaskTypeMasterId), new { @class = "select" })
+                                    @Html.DropDownListFor(s => s.TaskTypeMasterId, SelectListFunction.GetTaskType(Model.TaskTypeMasterId), new {@class = "select"})
                                 </div>
                             </div>
 
@@ -67,25 +69,25 @@
                                 <div class="form-group">
                                     <label class="control-label">Select Task Category : <span class="text-warning">*</span></label>
                                     <div class="">
-                                        @Html.DropDownListFor(s => s.TaskCategoryId, SelectListFunction.GetTaskCategory(Model.ProjectId), new { @class = "select" })
+                                        @Html.DropDownListFor(s => s.TaskCategoryId, SelectListFunction.GetTaskCategory(Model.ProjectId), new {@class = "select"})
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <br />
+                        <br/>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="control-label">Basic description : <span class="text-warning">*</span></label>
-                                    @Html.TextAreaFor(s => s.Description, new { @class = "basic-editor" })
+                                    @Html.TextAreaFor(s => s.Description, new {@class = "basic-editor"})
                                 </div>
                             </div>
                         </div>
                     </div>
 
 
-                    <br />
+                    <br/>
                     <div class="panel panel-flat">
                         <div class="panel panel-flat border-left-lg border-left-info">
                             <div class="panel-heading">
@@ -99,7 +101,7 @@
                                     <div class="form-group">
                                         <label class="control-label">Select Assigny : <span class="text-warning">*</span></label>
                                         <div class="">
-                                            @Html.DropDownListFor(s => s.AssignyId, SelectListFunction.GetUsers(Model.AssignyId), new { @class = "select" })
+                                            @Html.DropDownListFor(s => s.AssignyId, SelectListFunction.GetUsers(Model.AssignyId), new {@class = "select"})
                                         </div>
                                     </div>
                                 </div>
@@ -108,20 +110,20 @@
                                     <div class="form-group">
                                         <label class="control-label">Select Reporter : <span class="text-warning">*</span></label>
                                         <div class="">
-                                            @Html.DropDownListFor(s => s.ReporterId, SelectListFunction.GetUsers(Model.ReporterId), new { @class = "select" })
+                                            @Html.DropDownListFor(s => s.ReporterId, SelectListFunction.GetUsers(Model.ReporterId), new {@class = "select"})
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
 
-                            <br />
+                            <br/>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Select Priority : <span class="text-warning">*</span></label>
                                         <div class="">
-                                            @Html.DropDownListFor(s => s.PriorityMasterId, SelectListFunction.GetPriority(Model.PriorityMasterId), new { @class = "select" })
+                                            @Html.DropDownListFor(s => s.PriorityMasterId, SelectListFunction.GetPriority(Model.PriorityMasterId), new {@class = "select"})
                                         </div>
                                     </div>
                                 </div>
@@ -130,21 +132,23 @@
                                     <div class="form-group">
                                         <label class="control-label">Select Task Status : <span class="text-warning">*</span></label>
                                         <div class="">
-                                            @Html.DropDownListFor(s => s.TaskStatusMasterId, SelectListFunction.GetTaskStatus(Model.TaskStatusMasterId), new { @class = "select" })
+                                            @Html.DropDownListFor(s => s.TaskStatusMasterId, SelectListFunction.GetTaskStatus(Model.TaskStatusMasterId), new {@class = "select"})
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
 
-                            <br />
+                            <br/>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Project start-date : <span class="text-warning">*</span></label>
                                         <div class="input-group">
-                                            <span class="input-group-addon bg-primary"><i class="icon-calendar"></i></span>
-                                            @Html.TextBoxFor(s => s.StartDateString, new {@class = "form-control datepicker-here", data_language = "en", @placeholder = "dd/mm/yyyy"})
+                                            <span class="input-group-addon bg-primary">
+                                                <i class="icon-calendar"></i>
+                                            </span>
+                                            @Html.TextBoxFor(s => s.StartDateString, new {@class = "form-control datepicker-here", data_language = "en", placeholder = "dd/mm/yyyy"})
                                         </div>
                                     </div>
                                 </div>
@@ -153,8 +157,10 @@
                                     <div class="form-group">
                                         <label class="control-label">Completion Goal Date : </label>
                                         <div class="input-group">
-                                            <span class="input-group-addon bg-primary"><i class="icon-calendar"></i></span>
-                                            @Html.TextBoxFor(s => s.EndDateString, new {@class = "form-control datepicker-here", data_language = "en", @placeholder = "dd/mm/yyyy"})
+                                            <span class="input-group-addon bg-primary">
+                                                <i class="icon-calendar"></i>
+                                            </span>
+                                            @Html.TextBoxFor(s => s.EndDateString, new {@class = "form-control datepicker-here", data_language = "en", placeholder = "dd/mm/yyyy"})
                                         </div>
                                     </div>
                                 </div>
@@ -166,14 +172,14 @@
                                     <div class="form-group">
                                         <label class="control-label">Estimate hours : </label>
                                         <div class="input-group">
-                                            @Html.TextBoxFor(s => s.EstimateTimeHours, new { @class = "form-control", @placeholder = "200" })
+                                            @Html.TextBoxFor(s => s.EstimateTimeHours, new {@class = "form-control", placeholder = "200"})
                                             <span class="input-group-addon">Hours</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
-                            <br />
+
+                            <br/>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -184,9 +190,9 @@
                                 </div>
                             </div>
 
-                            <br />
+                            <br/>
                             <div class="row">
-                                <hr />
+                                <hr/>
                                 <div class="col-md-12">
 
                                     <button type="submit" class="btn btn-primary">Create a task</button>
@@ -200,7 +206,6 @@
             </div>
         </div>
     </div>
-
 }
 
 @section scripts{
@@ -211,7 +216,7 @@
     <script src="~/Content/lib/js/plugins/uploaders/bootstrap-uploader/bootstrap-uploader.js"></script>
 
     <Script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             //File uploader
             $("#AttachedFiles").fileinput({
                 showUpload: false,
@@ -222,15 +227,15 @@
             });
 
 
-
             tinymce.init({
                 selector: '.basic-editor',
                 height: 200,
                 menubar: false,
-                toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+                toolbar:
+                    'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
                 content_css: [
-                  '//fast.fonts.net/cssapi/e6dc9b99-64fe-4292-ad98-6974f93cd2a2.css',
-                  '//www.tinymce.com/css/codepen.min.css'
+                    '//fast.fonts.net/cssapi/e6dc9b99-64fe-4292-ad98-6974f93cd2a2.css',
+                    '//www.tinymce.com/css/codepen.min.css'
                 ]
             });
 
@@ -256,22 +261,28 @@
                 },
                 ignore: 'input[type=hidden], .select2-search__field',
                 errorClass: 'validation-error',
-                highlight: function (element, errorClass) {
+                highlight: function(element, errorClass) {
                     $(element).removeClass(errorClass);
                 },
-                unhighlight: function (element, errorClass) {
+                unhighlight: function(element, errorClass) {
                     $(element).removeClass(errorClass);
                 },
-                errorPlacement: function (error, element) {
-                    if (element.parents('div').hasClass("checker") || element.parents('div').hasClass("choice") || element.parent().hasClass('bootstrap-switch-container')) {
-                        if (element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
+                errorPlacement: function(error, element) {
+                    if (element.parents('div').hasClass("checker") ||
+                        element.parents('div').hasClass("choice") ||
+                        element.parent().hasClass('bootstrap-switch-container')) {
+                        if (element.parents('label').hasClass('checkbox-inline') ||
+                            element.parents('label').hasClass('radio-inline')) {
                             error.appendTo(element.parent().parent().parent().parent());
                         } else {
                             error.appendTo(element.parent().parent().parent().parent().parent());
                         }
-                    } else if (element.parents('div').hasClass('has-feedback') || element.hasClass('select2-hidden-accessible')) {
+                    } else if (element.parents('div').hasClass('has-feedback') ||
+                        element.hasClass('select2-hidden-accessible')) {
                         error.appendTo(element.parent());
-                    } else if (element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline') || element.parents('div').hasClass('checkbox-single')) {
+                    } else if (element.parents('label').hasClass('checkbox-inline') ||
+                        element.parents('label').hasClass('radio-inline') ||
+                        element.parents('div').hasClass('checkbox-single')) {
                         error.appendTo(element.parent().parent());
                     } else if (element.parents('div').hasClass('checkbox-group')) {
                         error.appendTo(element.parent().parent().parent());

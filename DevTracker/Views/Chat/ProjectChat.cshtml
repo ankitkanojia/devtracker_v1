@@ -1,11 +1,10 @@
 ﻿@model List<ChatVm>
-@using Repository.Helpers
 @{
     ViewBag.Title = "Project Chat";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    string messageHeight = string.Empty;
+    var messageHeight = string.Empty;
     var roleMasterId = Convert.ToInt64(CookieHelper.GetCookie(CookieName.RoleMasterId));
-    if (roleMasterId == (int)EnumList.Roles.Owner)
+    if (roleMasterId == (int) EnumList.Roles.Owner)
     {
         messageHeight = "min-height: 100%";
     }
@@ -17,33 +16,39 @@
 
 <div class="header">
     <div class="header-content">
-        @using (Html.BeginForm("", "", FormMethod.Post, new { id = "froSearchPanel" }))
+        @using (Html.BeginForm("", "", FormMethod.Post, new {id = "froSearchPanel"}))
         {
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Select Project : <span class="text-warning">*</span></label>
-                        @Html.DropDownList("ProjectId", SelectListFunction.GetProjects(0), new { @class = "select", @onchange = "GetTaskList(true)" })
+                        @Html.DropDownList("ProjectId", SelectListFunction.GetProjects(0), new {@class = "select", onchange = "GetTaskList(true)"})
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Select Task : <span class="text-warning">*</span></label>
-                        @Html.DropDownList("TaskMasterId", Enumerable.Empty<SelectListItem>(), "-- select task --", new { @class = "select" })
+                        @Html.DropDownList("TaskMasterId", Enumerable.Empty<SelectListItem>(), "-- select task --", new {@class = "select"})
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="control-label">Select Date : <span class="text-warning">*</span></label>
                         <div class="input-group">
-                            <span class="input-group-addon bg-primary"><i class="icon-calendar"></i></span>
-                            @Html.TextBox("ChatDate", null, new { @class = "form-control datepicker-here", data_language = "en", @placeholder = "dd/mm/yyyy" })
+                            <span class="input-group-addon bg-primary">
+                                <i class="icon-calendar"></i>
+                            </span>
+                            @Html.TextBox("ChatDate", null, new {@class = "form-control datepicker-here", data_language = "en", placeholder = "dd/mm/yyyy"})
                         </div>
                     </div>
                 </div>
                 <div class="col-md-1">
                     <div class="form-group">
-                        <button type="button" class="btn btn-warning" onclick="FilterChat()"><b><i class="icon-search4"></i></b></button>
+                        <button type="button" class="btn btn-warning" onclick="FilterChat()">
+                            <b>
+                                <i class="icon-search4"></i>
+                            </b>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -56,13 +61,13 @@
         <div class="loader06"></div>
         <div class="col-md-10 col-md-offset-1">
             <div id="frame" style="height: 65vh;">
-                <div class="content" style="width: 100%;border:1px solid #eee;border-radius: 1%">
+                <div class="content" style="border: 1px solid #eee; border-radius: 1%; width: 100%;">
                     <div class="messages" style="@messageHeight">
                         <ul id="ChatList">
-                            @foreach (ChatVm data in Model)
+                            @foreach (var data in Model)
                             {
                                 <li class="@data.Side">
-                                    <img src="@data.ProfileImage" alt="" />
+                                    <img src="@data.ProfileImage" alt=""/>
                                     <p>@data.Message</p>
                                 </li>
                             }
@@ -72,8 +77,10 @@
                     {
                         <div class="message-input">
                             <div class="wrap">
-                                <input id="txtMessage" type="text" placeholder="Write your message..." />
-                                <button onclick="SendMessage()" class="submit"><i class="icon-paperplane" aria-hidden="true"></i></button>
+                                <input id="txtMessage" type="text" placeholder="Write your message..."/>
+                                <button onclick="SendMessage()" class="submit">
+                                    <i class="icon-paperplane" aria-hidden="true"></i>
+                                </button>
                             </div>
                         </div>
                     }
@@ -89,12 +96,13 @@
     <script src="~/Content/lib/js/forms/datepicker.en.js"></script>
     <script>
 
-        $(document).ready(function () {
+        $(document).ready(function() {
 
             $('.messages').animate({
-                scrollTop: $("#ChatList").find("li").last().offset().top
-            }, "slow");
-            
+                    scrollTop: $("#ChatList").find("li").last().offset().top
+                },
+                "slow");
+
             $(".loader06").hide();
 
             $("#ChatDate").datepicker({
@@ -117,7 +125,7 @@
 
         });
 
-        var GetTaskList = function (type) {
+        var GetTaskList = function(type) {
             if (type) {
                 var projectId = $("#ProjectId").val();
                 if (projectId != 0) {
@@ -126,15 +134,22 @@
                         url: '@Url.Action("GetTasks", "Tasks")',
                         datatype: "json",
                         data: { projectId: projectId, taskId: 0 },
-                        success: function (data) {
+                        success: function(data) {
                             $("#TaskMasterId").html('');
                             if (data.chatList.length != 0) {
-                                $.each(data.chatList, function (e, element) {
-                                    var selected = '';
-                                    if (element.Selected)
-                                        selected = 'selected';
-                                    $("#TaskMasterId").append("<option value='" + element.Value + "' " + selected + ">" + element.Text + "</option>");
-                                });
+                                $.each(data.chatList,
+                                    function(e, element) {
+                                        var selected = '';
+                                        if (element.Selected)
+                                            selected = 'selected';
+                                        $("#TaskMasterId").append("<option value='" +
+                                            element.Value +
+                                            "' " +
+                                            selected +
+                                            ">" +
+                                            element.Text +
+                                            "</option>");
+                                    });
                             } else {
 
                                 $("#TaskMasterId").append("<option value='' selected>-- select task --</option>");
@@ -147,7 +162,7 @@
             }
         };
 
-        var FilterChat = function () {
+        var FilterChat = function() {
             if ($("#froSearchPanel").valid()) {
                 $(".loader06").show();
                 $.ajax({
@@ -156,12 +171,19 @@
                     datatype: "json",
                     async: false,
                     data: $("#froSearchPanel").serialize(),
-                    success: function (data) {
+                    success: function(data) {
                         if (data.status) {
                             $("#ChatList").html('');
-                            $.each(data.chatList, function (e, element) {
-                                $("#ChatList").append("<li class='" + element.Side + "'><img src='/FileManagement/Profile/" + element.ProfileImage + "' alt='' /><p>" + element.Message + "</p></li>");
-                            });
+                            $.each(data.chatList,
+                                function(e, element) {
+                                    $("#ChatList").append("<li class='" +
+                                        element.Side +
+                                        "'><img src='/FileManagement/Profile/" +
+                                        element.ProfileImage +
+                                        "' alt='' /><p>" +
+                                        element.Message +
+                                        "</p></li>");
+                                });
                         } else {
 
                         }
@@ -170,9 +192,9 @@
                     }
                 });
             }
-        }
+        };
 
-        var SendMessage = function () {
+        var SendMessage = function() {
             var Message = $("#txtMessage").val();
             if (Message.length == 0) {
                 NotyError("Please enter message..");
@@ -186,22 +208,27 @@
                         datatype: "json",
                         async: false,
                         data: $("#froSearchPanel").serialize() + "&Message=" + Message + "",
-                        success: function (data) {
+                        success: function(data) {
                             if (data.status) {
                                 var profileImagePath = $("#smallProfileImage").attr("src");
-                                $("#ChatList").append("<li class='replies'><img src='" + profileImagePath + "' alt='' /><p>" + Message + "</p></li>");
+                                $("#ChatList").append("<li class='replies'><img src='" +
+                                    profileImagePath +
+                                    "' alt='' /><p>" +
+                                    Message +
+                                    "</p></li>");
                                 $('.messages').animate({
-                                    scrollTop: $("#ChatList").find("li").last().offset().top
-                                }, 5000);
+                                        scrollTop: $("#ChatList").find("li").last().offset().top
+                                    },
+                                    5000);
                                 $("#txtMessage").val('');
                             }
                         }
                     });
                 }
             }
-        }
+        };
 
-        $("#txtMessage").keyup(function (event) {
+        $("#txtMessage").keyup(function(event) {
             if (event.keyCode == 13) {
                 SendMessage();
             }
@@ -209,4 +236,3 @@
 
     </script>
 }
-

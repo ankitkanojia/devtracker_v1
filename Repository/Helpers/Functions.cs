@@ -18,7 +18,7 @@ namespace Repository.Helpers
                     var activity = new Activity
                     {
                         CreatedDate = DateTime.Now,
-                        IsDelete =  false,
+                        IsDelete = false,
                         Description = description,
                         Title = title,
                         UserMasterId = userMasterId

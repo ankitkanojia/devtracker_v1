@@ -5,7 +5,6 @@ namespace Repository.Helpers
 {
     public static class CookieHelper
     {
-
         public static void SetCookie(string key, string value, int expiresHour)
         {
             if (HttpContext.Current.Request.Cookies[key] != null)
@@ -45,7 +44,7 @@ namespace Repository.Helpers
         public static void RemoveCookie(string key)
         {
             if (HttpContext.Current.Request.Cookies[key] == null) return;
-            var cookie = new HttpCookie(key) { Expires = DateTime.Now.AddDays(-1d) };
+            var cookie = new HttpCookie(key) {Expires = DateTime.Now.AddDays(-1d)};
             HttpContext.Current.Response.Cookies.Add(cookie);
         }
 
@@ -60,7 +59,5 @@ namespace Repository.Helpers
                     httpCookie.Expires = DateTime.Now.AddDays(-1d);
             }
         }
-
-
     }
 }

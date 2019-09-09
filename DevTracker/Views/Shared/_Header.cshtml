@@ -1,5 +1,4 @@
-﻿@using Repository.Helpers
-<header class="main-nav clearfix">
+﻿<header class="main-nav clearfix">
 
     <!-- Searchbar -->
     <div class="top-search-bar">
@@ -7,7 +6,9 @@
             <div class="row">
                 <div class="col-md-6 col-md-offset-3">
                     <div class="search-input-addon">
-                        <span class="addon-icon"><i class="icon-search4"></i></span>
+                        <span class="addon-icon">
+                            <i class="icon-search4"></i>
+                        </span>
                         <input type="text" class="form-control top-search-input" placeholder="Enter your keyword...">
                     </div>
                 </div>
@@ -19,7 +20,11 @@
     <div class="navbar-left pull-left">
         <div class="clearfix">
             <ul class="left-branding pull-left">
-                <li class="visible-handheld"><span class="left-toggle-switch"><i class="icon-menu7"></i></span></li>
+                <li class="visible-handheld">
+                    <span class="left-toggle-switch">
+                        <i class="icon-menu7"></i>
+                    </span>
+                </li>
                 <li>
                     <a href="#">
                         <div class="logo"></div>
@@ -33,7 +38,11 @@
     <div class="navbar pull-left">
         <div class="clearfix">
             <ul class="pull-left top-icons hidden-xs">
-                <li><a href="#" class="btn-top-search m-l-10"><i class="icon-search4"></i></a></li>
+                <li>
+                    <a href="#" class="btn-top-search m-l-10">
+                        <i class="icon-search4"></i>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
@@ -42,16 +51,22 @@
     <div class="navbar pull-right">
         <div class="clearfix">
             <ul class="pull-right top-icons">
-                <li><a href="#" class="btn-top-search visible-xs"><i class="icon-search4"></i></a></li>
+                <li>
+                    <a href="#" class="btn-top-search visible-xs">
+                        <i class="icon-search4"></i>
+                    </a>
+                </li>
 
                 <!-- Quick apps dropdown -->
                 <li class="dropdown apps-dropdown hidden-xs">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-grid2"></i></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="icon-grid2"></i>
+                    </a>
                     <div class="dropdown-menu">
                         <ul class="shortcuts clearfix">
                             <li>
                                 <a href="#">
-                                    <img src="~/Content/img/icons/emails.png" />
+                                    <img src="~/Content/img/icons/emails.png"/>
                                     <span class="apps-noty">4</span>
                                     <span class="apps-label">Email</span>
                                 </a>
@@ -65,7 +80,7 @@
                             </li>
                             <li>
                                 <a href="#">
-                                    <img src="~/Content/img/icons/projects.png" />
+                                    <img src="~/Content/img/icons/projects.png"/>
                                     <span class="apps-label">Projects</span>
                                 </a>
                             </li>
@@ -95,7 +110,11 @@
                 </li>
                 <!-- /Quick apps dropdown -->
                 <!-- Rightbar -->
-                <li><a href="#"><span class="bubble">6</span><i class="icon-stack3"></i></a></li>
+                <li>
+                    <a href="#">
+                        <span class="bubble">6</span><i class="icon-stack3"></i>
+                    </a>
+                </li>
                 <!-- /Rightbar -->
                 <!-- User dropdown -->
                 <li class="dropdown user-dropdown">
@@ -104,32 +123,38 @@
                         <i class="icon-more2"></i>
                         <small>
                             @{
-                                var role = ((EnumList.Roles)Convert.ToInt64(CookieHelper.GetCookie(CookieName.RoleMasterId))).ToString().Replace('_', ' ');
+                                var role = ((EnumList.Roles) Convert.ToInt64(CookieHelper.GetCookie(CookieName.RoleMasterId))).ToString().Replace('_', ' ');
                             }
 
                             @role
                         </small>
                     </a>
                     <a href="#" class="btn-user dropdown-toggle hidden-xs" data-toggle="dropdown">
-                        <img id="smallProfileImage" src="@CookieHelper.GetCookie(CookieName.ProfileImage)" class="img-circle" style="max-width: 40px;" alt="" />
+                        <img id="smallProfileImage" src="@CookieHelper.GetCookie(CookieName.ProfileImage)" class="img-circle" style="max-width: 40px;" alt=""/>
                     </a>
-                    <a href="#" class="dropdown-toggle visible-xs" data-toggle="dropdown"><i class="icon-more"></i></a>
+                    <a href="#" class="dropdown-toggle visible-xs" data-toggle="dropdown">
+                        <i class="icon-more"></i>
+                    </a>
                     <div class="dropdown-menu no-padding">
                         <div class="user-icon text-center p-t-15">
-                            <img src="@CookieHelper.GetCookie(CookieName.ProfileImage)" class="img-circle" style="width: 75px;" alt="" />
+                            <img src="@CookieHelper.GetCookie(CookieName.ProfileImage)" class="img-circle" style="width: 75px;" alt=""/>
                             <h5 class="text-center p-b-15 text-semibold">
                                 @CookieHelper.GetCookie(CookieName.Name)
                             </h5>
                         </div>
                         <ul class="user-links">
-                            <li><a href="@Url.Action("MyProfile", "Users")"><i class="icon-profile"></i> My profile</a></li>
+                            <li>
+                                <a href="@Url.Action("MyProfile", "Users")"><i class="icon-profile"></i> My profile</a>
+                            </li>
                             <li>
                                 <a href="#">
                                     <i class="icon-task"></i> Running Task <span class="badge badge-danger pull-right">4</span>
                                 </a>
                             </li>
                         </ul>
-                        <div class="text-center p-10"><a href="@Url.Action("Login", "Home")" class="btn btn-block"><i class="icon-exit3 i-16 position-left"></i> Logout</a></div>
+                        <div class="text-center p-10">
+                            <a href="@Url.Action("Login", "Home")" class="btn btn-block"><i class="icon-exit3 i-16 position-left"></i> Logout</a>
+                        </div>
 
                     </div>
                 </li>
@@ -140,4 +165,3 @@
     </div>
     <!-- /Navbar icons -->
 </header>
-
